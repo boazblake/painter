@@ -9,7 +9,7 @@ const PaintTools = () => {
         m(Button, {
           mdl,
           classList: "toolBtn",
-          action: () => console.log("New Painting", mdl),
+          action: () => {},
           label: "New Painting"
         })
       )
@@ -38,12 +38,10 @@ const PrintTools = () => {
 
 const Toolbar = () => {
   return {
-    view: ({ attrs: { mdl } }) => {
-      console.log(m.route.get())
-      return m.route.get() == "/paint"
+    view: ({ attrs: { mdl } }) =>
+      m.route.get() == "/paint"
         ? m(PaintTools, { mdl })
         : m(PrintTools, { mdl })
-    }
   }
 }
 

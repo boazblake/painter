@@ -3,8 +3,13 @@ import Art from "./art"
 
 const Canvas = () => {
   return {
-    view: ({ attrs: { id, mdl } }) =>
-      m(".canvas", m(Art, { id, mdl, classList: "canvas", ctx: mdl.canvas }))
+    view: ({ attrs: { mdl } }) => {
+      console.log("mdl.canvas", mdl.canvas)
+      return m(
+        ".canvas",
+        m(Art, { id: "canvas", mdl, classList: "canvas", ctx: mdl.canvas })
+      )
+    }
   }
 }
 

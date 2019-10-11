@@ -1,5 +1,5 @@
 import m from "mithril"
-import Model from "./model.js"
+import Model, { isEmpty } from "./model.js"
 import Navbar from "./components/navbar"
 import Toolbar from "./components/toolbar"
 import Easel from "./pages/easel.js"
@@ -25,8 +25,7 @@ const routes = (mdl) => {
     "/paint": { render: () => m(Layout, { mdl }, m(Easel, { mdl })) },
     "/print": {
       onmatch: (a, b, c) => {
-        console.log("models length", mdl, mdl.artworks.length)
-        if (mdl.artworks.length == 0) return m.route.SKIP
+        if (mdl.artworks().length == 0) return m.route.set("/paint")
       },
       render: () => m(Layout, { mdl }, m(Printer, { mdl }))
     }
@@ -34,9 +33,6 @@ const routes = (mdl) => {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // do your setup here
   const root = document.body
-  console.log("Initialized app")
-
-  m.route(root, "/paint", routes(Model))
+  m.route(root, "/print", routes(Model))
 })

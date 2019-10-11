@@ -1,9 +1,19 @@
 import m from "mithril"
-import List from "./list"
+import Art from "./art"
 
-const Printer = () => {
+import { rest } from "../model"
+
+const Printer = ({ attrs: { mdl } }) => {
   return {
-    view: ({ attrs: { mdl } }) => m(".Printer", m(List, { mdl }))
+    view: ({ attrs: { mdl } }) => {
+      console.log(mdl.artworks())
+      return m(
+        ".Printer",
+        mdl
+          .artworks()
+          .map((art) => m(Art, { mdl, ctx: art, classList: "canvas" }))
+      )
+    }
   }
 }
 

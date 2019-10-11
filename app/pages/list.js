@@ -6,9 +6,9 @@ const List = () => {
     view: ({ attrs: { mdl } }) =>
       m(
         "ul.list",
-        mdl.artworks.map(({ id, art }) => {
-          console.log("list item", id)
-          return m(Art, { mdl, ctx: art, classList: "listItem" })
+        mdl.artworks().map((art) => {
+          console.log("arts", art)
+          m(Art, { mdl, ctx: art, classList: "canvas" })
         })
       )
   }
