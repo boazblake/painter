@@ -17,7 +17,7 @@
   justify-content: space-evenly;
   align-content: center;
   height: 50px;
-  margin-top: 10px;
+  padding: 10px 0;
 }
 
 .btn {
@@ -61,7 +61,6 @@
   flex-flow: row;
   justify-content: center;
   align-content: center;
-  padding-top: 10px;
 }
 
 .gallery {
@@ -91,4 +90,17 @@ canvas {
 .landscape {
   min-width: 500px;
   max-height: 400px;
+}
+
+@media (min-width: 700px) and (max-width: 990px) {
+  .gallery > .canvas {
+    margin-left: 10px;
+    width: 48%;
+  }
+}
+
+@media (min-width: 400px) and (max-width: 710px) {
+  .gallery > .canvas {
+    width: 100%;
+  }
 }
