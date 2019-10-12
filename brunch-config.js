@@ -12,3 +12,7 @@ exports.files = {
 exports.plugins = {
   babel: { presets: ["latest", "stage-0"] }
 }
+
+exports.paths = {
+  public: "docs"
+}
