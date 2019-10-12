@@ -1,14 +1,12 @@
 import m from "mithril"
-import Art from "./art"
 
 const Canvas = () => {
   return {
-    view: ({ attrs: { mdl } }) => {
-      return m(
-        ".canvas",
-        m(Art, { id: "canvas", mdl, classList: "", ctx: mdl.canvas })
-      )
-    }
+    oncreate: ({ dom, attrs: { ctx, mdl } }) => {
+      let newCtx = dom.getContext("2d")
+      ctx && newCtx.putImageData(ctx, 0, 0)
+    },
+    view: ({ attrs: { classList, id } }) => m(`canvas.${classList}`, { id })
   }
 }
 

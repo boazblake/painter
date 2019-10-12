@@ -37,6 +37,7 @@ const Model = {
   artworks: Stream([]),
   canvas: null,
   saveArt,
-  log
+  log,
+  orientation: "portrait"
 }
 export default Model

@@ -1,15 +1,14 @@
 import m from "mithril"
-import Art from "./art"
+import Canvas from "./canvas"
 
 const Gallery = () => {
   return {
     view: ({ attrs: { mdl } }) => {
-      console.log("gallery", mdl.artworks())
       return m(
         ".gallery",
         mdl
           .artworks()
-          .map(({ art }) => m(Art, { mdl, ctx: art, classList: "canvas" }))
+          .map(({ art }) => m(Canvas, { mdl, ctx: art, classList: "canvas" }))
       )
     }
   }

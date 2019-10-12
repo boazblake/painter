@@ -13,26 +13,18 @@ const Easel = () => {
         let image = ctx.getImageData(0, 0, mdl.width, mdl.height)
         mdl.canvas = image
         mdl.saveArt(mdl, image)
-        console.log(
-          "onionit easel dom",
-          dom,
-          mdl.artworks(),
-          mdl.canvas,
-          mdl.preventUpdate()
-        )
       }
     },
-    oncreate: ({ dom, attrs: { mdl } }) => {
-      console.log(
-        "oncreate easel",
-        dom,
-        mdl.artworks(),
-        mdl.canvas,
-        typeof mdl.preventUpdate(),
-        mdl.preventUpdate()
+    view: ({ attrs: { mdl } }) =>
+      m(
+        ".easel",
+        m(Canvas, {
+          id: "canvas",
+          mdl,
+          classList: mdl.orientation,
+          ctx: mdl.canvas
+        })
       )
-    },
-    view: ({ attrs: { mdl } }) => m(".easel", m(Canvas, { id: "canvas", mdl }))
   }
 }
 

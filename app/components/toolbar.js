@@ -5,7 +5,7 @@ const EaselTools = () => {
   return {
     view: ({ attrs: { mdl } }) =>
       m(
-        ".navbar",
+        "aside.navbar",
         m(Button, {
           mdl,
           classList: "toolBtn",
@@ -20,10 +20,11 @@ const EaselTools = () => {
           classList: "toolBtn",
           action: () => {
             mdl.preventUpdate(false)
-            mdl.height = 600
-            mdl.width = 400
+            mdl.orientation == "portrait"
+              ? (mdl.orientation = "landscape")
+              : (mdl.orientation = "portrait")
           },
-          label: "Rotate Painting"
+          label: mdl.orientation == "portrait" ? "landscape" : "portrait"
         })
       )
   }
@@ -32,7 +33,7 @@ const EaselTools = () => {
 const PrintTools = () => {
   return {
     view: ({ attrs: { mdl } }) =>
-      m(".navbar", [
+      m("aside.navbar", [
         m(Button, {
           mdl,
           classList: "toolBtn",

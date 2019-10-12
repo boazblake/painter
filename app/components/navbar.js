@@ -21,8 +21,11 @@ const Navbar = () => {
           : m(Button, {
               mdl,
               classList: "navBtn",
-              action: () => m.route.set("/easel"),
-              label: "Commision Painting"
+              action: () => {
+                mdl.preventUpdate(true)
+                m.route.set("/easel")
+              },
+              label: "Commision New Painting"
             })
       )
     }
