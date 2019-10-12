@@ -60,7 +60,7 @@
   display: flex;
   flex-flow: row;
   justify-content: center;
-  align-content: center;
+  padding-top: 10px;
 }
 
 .gallery {
