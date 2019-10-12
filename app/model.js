@@ -1,5 +1,4 @@
 import Stream from "mithril-stream"
-import m from "mithril"
 
 export const log = (m) => (v) => {
   console.log(m, v)
@@ -23,7 +22,7 @@ export const range = (size) => [...Array(size).keys()]
 export const isEmpty = (xs) => xs.length == 0
 
 const saveArt = (mdl, art) => {
-  let image = { id: mdl.artworks.length, art }
+  let image = { id: mdl.artworks().length, art }
   mdl.artworks.map((xs) => xs.push(image))
 }
 
@@ -31,6 +30,7 @@ const shapes = ["circle", "square", "triangle"]
 
 const Model = {
   count: Stream(rand(30, 70)),
+  preventUpdate: Stream(true),
   shapes,
   width: 600,
   height: 600,

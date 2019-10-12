@@ -4,31 +4,33 @@ import Paint from "./paint.js"
 
 const Easel = () => {
   return {
-    oncreate: ({ attrs: { mdl } }) => {
-      let dom = document.getElementById("canvas")
-      let ctx = dom.getContext("2d")
-      ctx.clearRect(0, 0, 600, 600)
-      Paint({ ctx, mdl })
-      let image = ctx.getImageData(0, 0, mdl.width, mdl.height)
-      mdl.canvas = image
+    oninit: ({ attrs: { mdl } }) => {
+      if (mdl.preventUpdate()) {
+        let dom = document.createElement("canvas")
+        let ctx = dom.getContext("2d")
+        ctx.clearRect(0, 0, 600, 600)
+        Paint({ ctx, mdl })
+        let image = ctx.getImageData(0, 0, mdl.width, mdl.height)
+        mdl.canvas = image
+        mdl.saveArt(mdl, image)
+        console.log(
+          "onionit easel dom",
+          dom,
+          mdl.artworks(),
+          mdl.canvas,
+          mdl.preventUpdate()
+        )
+      }
     },
-    onbeforeupdate: ({ attrs: { mdl } }) => {
-      // console.log(dom)
-      let dom = document.getElementById("canvas")
-      let ctx = dom.getContext("2d")
-      let image = ctx.getImageData(0, 0, mdl.width, mdl.height)
-      mdl.saveArt(mdl, image)
-      ctx.clearRect(0, 0, 600, 600)
-      Paint({ ctx, mdl })
-    },
-    onbeforeremove: ({ attrs: { mdl } }) => {
-      // console.log(dom)
-      let dom = document.getElementById("canvas")
-      let ctx = dom.getContext("2d")
-      let image = ctx.getImageData(0, 0, mdl.width, mdl.height)
-      mdl.saveArt(mdl, image)
-      ctx.clearRect(0, 0, 600, 600)
-      Paint({ ctx, mdl })
+    oncreate: ({ dom, attrs: { mdl } }) => {
+      console.log(
+        "oncreate easel",
+        dom,
+        mdl.artworks(),
+        mdl.canvas,
+        typeof mdl.preventUpdate(),
+        mdl.preventUpdate()
+      )
     },
     view: ({ attrs: { mdl } }) => m(".easel", m(Canvas, { id: "canvas", mdl }))
   }

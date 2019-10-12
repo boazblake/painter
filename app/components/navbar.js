@@ -5,21 +5,26 @@ import { isEmpty } from "../model"
 const Navbar = () => {
   return {
     view: ({ attrs: { mdl } }) => {
-      console.log("navbar", mdl.artworks(), m.route.get())
-      return m.route.get() == "/paint"
-        ? mdl.artworks.map(isEmpty) &&
-            m(Button, {
+      return m(
+        "nav.navbar",
+        m.route.get() == "/easel"
+          ? mdl.artworks.map(isEmpty) &&
+              m(Button, {
+                mdl,
+                classList: "navBtn",
+                action: () => {
+                  mdl.preventUpdate(false)
+                  m.route.set("/print")
+                },
+                label: "View Gallery"
+              })
+          : m(Button, {
               mdl,
               classList: "navBtn",
-              action: () => m.route.set("/print"),
-              label: "Print Picture"
+              action: () => m.route.set("/easel"),
+              label: "Commision Painting"
             })
-        : m(Button, {
-            mdl,
-            classList: "navBtn",
-            action: () => m.route.set("/paint"),
-            label: "Paint Picture"
-          })
+      )
     }
   }
 }

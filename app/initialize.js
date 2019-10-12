@@ -3,7 +3,7 @@ import Model, { isEmpty } from "./model.js"
 import Navbar from "./components/navbar"
 import Toolbar from "./components/toolbar"
 import Easel from "./pages/easel.js"
-import Printer from "./pages/printer.js"
+import Gallery from "./pages/gallery.js"
 
 const Main = () => {
   return { view: ({ children }) => m("section.main", children) }
@@ -22,12 +22,14 @@ const Layout = () => {
 
 const routes = (mdl) => {
   return {
-    "/paint": { render: () => m(Layout, { mdl }, m(Easel, { mdl })) },
+    "/easel": {
+      render: () => m(Layout, { mdl }, m(Easel, { mdl, key: Date.now() }))
+    },
     "/print": {
       onmatch: (a, b, c) => {
-        if (mdl.artworks().length == 0) return m.route.set("/paint")
+        if (mdl.artworks().length == 0) return m.route.set("/easel")
       },
-      render: () => m(Layout, { mdl }, m(Printer, { mdl }))
+      render: () => m(Layout, { mdl }, m(Gallery, { mdl }))
     }
   }
 }
