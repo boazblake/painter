@@ -491,12 +491,8 @@ var Model = {
   count: (0, _mithrilStream2.default)(rand(30, 70)),
   preventUpdate: (0, _mithrilStream2.default)(true),
   shapes: shapes,
-  width: function width() {
-    return WIDTH.map(getDpr)();
-  },
-  height: function height() {
-    return HEIGHT.map(getDpr)();
-  },
+  width: (0, _mithrilStream2.default)(600),
+  height: (0, _mithrilStream2.default)(600),
   artworks: (0, _mithrilStream2.default)([]),
   canvas: (0, _mithrilStream2.default)(null),
   ctx: (0, _mithrilStream2.default)(null),
@@ -539,9 +535,9 @@ var Easel = function Easel() {
         var ctx = dom.getContext("2d");
         ctx.imageSmoothingQuality = "high";
         ctx.filter = "brightness(0.8)";
+        ctx.scale(0.8, 0.8);
         (0, _paint2.default)({ ctx: ctx, mdl: mdl });
         var image = ctx.getImageData(0, 0, mdl.width(), mdl.height());
-        console.log(ctx, image);
         mdl.canvas(image);
         mdl.ctx(ctx);
         mdl.dom(dom);
@@ -578,17 +574,61 @@ var _canvas = require("../components/canvas");
 
 var _canvas2 = _interopRequireDefault(_canvas);
 
+var _button = require("../components/button");
+
+var _button2 = _interopRequireDefault(_button);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Modal = function Modal() {
+  return {
+    view: function view(_ref) {
+      var children = _ref.children,
+          close = _ref.attrs.close;
+      return (0, _mithril2.default)(".modalBackground", {
+        onclick: function onclick() {
+          return close;
+        }
+      }, (0, _mithril2.default)(".modal", children));
+    }
+  };
+};
 
 var Gallery = function Gallery() {
   return {
-    view: function view(_ref) {
-      var mdl = _ref.attrs.mdl;
+    show: false,
+    close: function close(state) {
+      return state.show = !state.show;
+    },
+    oninit: function oninit(_ref2) {
+      var mdl = _ref2.attrs.mdl;
+      return mdl.canvas(null);
+    },
+    view: function view(_ref3) {
+      var state = _ref3.state,
+          mdl = _ref3.attrs.mdl;
 
-      return (0, _mithril2.default)(".gallery", mdl.artworks().map(function (_ref2) {
-        var art = _ref2.art;
-        return (0, _mithril2.default)(_canvas2.default, { mdl: mdl, ctx: art, classList: "canvas" });
-      }));
+      return [(0, _mithril2.default)(".gallery", mdl.artworks().map(function (_ref4) {
+        var art = _ref4.art;
+
+        return (0, _mithril2.default)(_button2.default, {
+          classList: "paintBtn",
+          action: function action(e) {
+            var dom = e.target;
+            var ctx = dom.getContext("2d");
+            ctx.filter = "brightness(1)";
+            var image = ctx.getImageData(0, 0, mdl.width(), mdl.height());
+
+            mdl.canvas(image);
+            state.close(state);
+          },
+          label: (0, _mithril2.default)(_canvas2.default, { mdl: mdl, ctx: art, classList: "canvas" })
+        });
+      })), state.show && (0, _mithril2.default)(Modal, (0, _mithril2.default)(_canvas2.default, {
+        close: state.close(state),
+        ctx: mdl.canvas(),
+        classList: "canvas"
+      }))];
     }
   };
 };

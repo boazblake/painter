@@ -23,6 +23,7 @@
 .btn {
   width: 120px;
   height: 40px;
+  outline: none;
 }
 
 .btn:hover {
@@ -49,6 +50,12 @@
   background: #ecf0f1;
 }
 
+.paintBtn {
+  width: fit-content;
+  height: fit-content;
+  border: none;
+}
+
 .main {
   width: 100vw;
   height: 80vh;
@@ -67,7 +74,7 @@
   display: flex;
   flex-flow: wrap;
   width: 95vw;
-  height: 500px;
+  height: 550px;
   overflow: scroll;
   padding-top: 25px;
   justify-content: space-between;
@@ -78,7 +85,7 @@ canvas {
   box-shadow: 0 10px 10px -5px;
 }
 
-.gallery > .canvas {
+.gallery > .paintBtn {
   margin-bottom: 20px;
 }
 
@@ -92,15 +99,43 @@ canvas {
   max-height: 400px;
 }
 
+.modalBackground {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.modal {
+  position: absolute;
+  background: white;
+  left: 50%;
+  top: 50%;
+  /* transform: translate(-50%, -50%); */
+  -ms-transform: translate(-50%, -50%); /* for IE 9 */
+  -webkit-transform: translate(-50%, -50%); /* for Safari */
+}
+
+.modal > .canvas {
+  width: 400px;
+  height: 500px;
+}
+
 @media (min-width: 700px) and (max-width: 990px) {
-  .gallery > .canvas {
+  .gallery > .paintBtn {
     margin-left: 10px;
     width: 48%;
   }
 }
 
 @media (min-width: 400px) and (max-width: 710px) {
-  .gallery > .canvas {
+  .gallery > .paintBtn {
+    width: 100%;
+  }
+  .paintBtn > .canvas {
     width: 100%;
   }
 }

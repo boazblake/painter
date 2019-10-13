@@ -10,9 +10,9 @@ const Easel = () => {
         let ctx = dom.getContext("2d")
         ctx.imageSmoothingQuality = "high"
         ctx.filter = "brightness(0.8)"
+        ctx.scale(0.8, 0.8)
         Paint({ ctx, mdl })
         let image = ctx.getImageData(0, 0, mdl.width(), mdl.height())
-        console.log(ctx, image)
         mdl.canvas(image)
         mdl.ctx(ctx)
         mdl.dom(dom)
