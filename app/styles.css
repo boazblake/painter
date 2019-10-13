@@ -24,30 +24,32 @@
   width: 120px;
   height: 40px;
   outline: none;
-}
-
-.btn:hover {
+  transition: all 0.1s, color 0.1s 0.1s;
   cursor: pointer;
 }
 
 .navBtn {
-  color: #ecf0f1;
-  background: #3498db;
+  color: rgba(236, 240, 241, 1);
+  background: rgba(52, 73, 94, 8);
 }
 
 .navBtn:hover {
-  color: #3498db;
-  background: #ecf0f1;
+  color: rgba(52, 73, 94, 8);
+  background: rgba(236, 240, 241, 1);
+  box-shadow: 100% 0 0 0 rgba(0, 0, 0, 0.25) inset,
+    -100% 0 0 0 rgba(0, 0, 0, 0.25) inset;
 }
 
 .toolBtn {
-  color: #ecf0f1;
-  background: #34495e;
+  color: rgba(236, 240, 241, 1);
+  background: rgba(44, 62, 80, 1);
 }
 
 .toolBtn:hover {
-  color: #34495e;
-  background: #ecf0f1;
+  color: rgba(44, 62, 80, 1);
+  background: rgba(236, 240, 241, 1);
+  box-shadow: 0 0 0 10px rgba(236, 240, 241, 1) inset,
+    0 0 0 150px rgba(236, 240, 241, 1) inset;
 }
 
 .paintBtn {

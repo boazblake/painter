@@ -37,7 +37,9 @@ const PrintTools = () => {
         m(Button, {
           mdl,
           classList: "toolBtn",
-          action: () => console.log("download", mdl),
+          action: () => {
+            console.log(mdl)
+          },
           label: "Download"
         }),
         m(Button, {

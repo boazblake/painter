@@ -309,7 +309,7 @@ var PrintTools = function PrintTools() {
         mdl: mdl,
         classList: "toolBtn",
         action: function action() {
-          return console.log("download", mdl);
+          console.log(mdl);
         },
         label: "Download"
       }), (0, _mithril2.default)(_button2.default, {
