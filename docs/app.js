@@ -175,6 +175,42 @@ var Button = function Button() {
 exports.default = Button;
 });
 
+;require.register("components/canvas.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _mithril = require("mithril");
+
+var _mithril2 = _interopRequireDefault(_mithril);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Canvas = function Canvas() {
+  return {
+    oncreate: function oncreate(_ref) {
+      var dom = _ref.dom,
+          _ref$attrs = _ref.attrs,
+          ctx = _ref$attrs.ctx,
+          mdl = _ref$attrs.mdl;
+
+      var newCtx = dom.getContext("2d");
+      ctx && newCtx.putImageData(ctx, 0, 0);
+    },
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          classList = _ref2$attrs.classList,
+          id = _ref2$attrs.id;
+      return (0, _mithril2.default)("canvas." + classList, { id: id });
+    }
+  };
+};
+
+exports.default = Canvas;
+});
+
 ;require.register("components/navbar.js", function(exports, require, module) {
 "use strict";
 
@@ -388,6 +424,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
 
+var WIDTH = (0, _mithrilStream2.default)(600);
+var HEIGHT = (0, _mithrilStream2.default)(600);
+
+var getDpr = function getDpr(size) {
+  return size * window.devicePixelRatio || 1;
+};
+
 var log = exports.log = function log(m) {
   return function (v) {
     console.log(m, v);
@@ -411,18 +454,18 @@ var rest = exports.rest = function rest(_ref) {
 
 var getPosition = exports.getPosition = function getPosition(mdl) {
   return {
-    x: rand(0, mdl.width),
-    y: rand(0, mdl.height)
+    x: rand(0, mdl.width()),
+    y: rand(0, mdl.height())
   };
 };
 var getRotation = exports.getRotation = function getRotation() {
   return rand(0, 360);
 };
 var getWidth = exports.getWidth = function getWidth(mdl) {
-  return rand(0, mdl.width);
+  return rand(0, mdl.width());
 };
 var getHeight = exports.getHeight = function getHeight(mdl) {
-  return rand(0, mdl.height);
+  return rand(0, mdl.height());
 };
 var getHue = exports.getHue = function getHue() {
   return rand(0, 999);
@@ -448,51 +491,21 @@ var Model = {
   count: (0, _mithrilStream2.default)(rand(30, 70)),
   preventUpdate: (0, _mithrilStream2.default)(true),
   shapes: shapes,
-  width: 600,
-  height: 600,
+  width: function width() {
+    return WIDTH.map(getDpr)();
+  },
+  height: function height() {
+    return HEIGHT.map(getDpr)();
+  },
   artworks: (0, _mithrilStream2.default)([]),
-  canvas: null,
+  canvas: (0, _mithrilStream2.default)(null),
+  ctx: (0, _mithrilStream2.default)(null),
+  dom: (0, _mithrilStream2.default)(null),
   saveArt: saveArt,
   log: log,
   orientation: "portrait"
 };
 exports.default = Model;
-});
-
-;require.register("pages/canvas.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _mithril = require("mithril");
-
-var _mithril2 = _interopRequireDefault(_mithril);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Canvas = function Canvas() {
-  return {
-    oncreate: function oncreate(_ref) {
-      var dom = _ref.dom,
-          _ref$attrs = _ref.attrs,
-          ctx = _ref$attrs.ctx,
-          mdl = _ref$attrs.mdl;
-
-      var newCtx = dom.getContext("2d");
-      ctx && newCtx.putImageData(ctx, 0, 0);
-    },
-    view: function view(_ref2) {
-      var _ref2$attrs = _ref2.attrs,
-          classList = _ref2$attrs.classList,
-          id = _ref2$attrs.id;
-      return (0, _mithril2.default)("canvas." + classList, { id: id });
-    }
-  };
-};
-
-exports.default = Canvas;
 });
 
 ;require.register("pages/easel.js", function(exports, require, module) {
@@ -506,11 +519,11 @@ var _mithril = require("mithril");
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _canvas = require("./canvas.js");
+var _canvas = require("../components/canvas.js");
 
 var _canvas2 = _interopRequireDefault(_canvas);
 
-var _paint = require("./paint.js");
+var _paint = require("../paint.js");
 
 var _paint2 = _interopRequireDefault(_paint);
 
@@ -524,10 +537,14 @@ var Easel = function Easel() {
       if (mdl.preventUpdate()) {
         var dom = document.createElement("canvas");
         var ctx = dom.getContext("2d");
-        ctx.clearRect(0, 0, 600, 600);
+        ctx.imageSmoothingQuality = "high";
+        ctx.filter = "brightness(0.8)";
         (0, _paint2.default)({ ctx: ctx, mdl: mdl });
-        var image = ctx.getImageData(0, 0, mdl.width, mdl.height);
-        mdl.canvas = image;
+        var image = ctx.getImageData(0, 0, mdl.width(), mdl.height());
+        console.log(ctx, image);
+        mdl.canvas(image);
+        mdl.ctx(ctx);
+        mdl.dom(dom);
         mdl.saveArt(mdl, image);
       }
     },
@@ -537,7 +554,7 @@ var Easel = function Easel() {
         id: "canvas",
         mdl: mdl,
         classList: mdl.orientation,
-        ctx: mdl.canvas
+        ctx: mdl.canvas()
       }));
     }
   };
@@ -557,7 +574,7 @@ var _mithril = require("mithril");
 
 var _mithril2 = _interopRequireDefault(_mithril);
 
-var _canvas = require("./canvas");
+var _canvas = require("../components/canvas");
 
 var _canvas2 = _interopRequireDefault(_canvas);
 
@@ -579,22 +596,27 @@ var Gallery = function Gallery() {
 exports.default = Gallery;
 });
 
-;require.register("pages/paint.js", function(exports, require, module) {
+;require.register("paint.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _model = require("../model");
+var _model = require("./model");
 
+// hsla(hue, saturation, lightness, alpha)
+// hue	0-360
+// saturation	0-100%
+// lightness	0-50-100%
+// alpha	0.0-1.0
 var hsla = function hsla(h, s, l, a) {
   return "hsla(" + h + ", " + s + ", " + l + ", " + a + ")";
 };
 
 var drawSquare = function drawSquare(ctx, position, rotation, width, height, hue) {
   // console.log("square", position, rotation, width, height)
-  var color = hsla(hue, "100%", "50%", 0.75);
+  var color = hsla(hue, "60%", "50%", 0.75);
   ctx.save();
   ctx.fillStyle = color;
   ctx.translate(position.x, position.y);
@@ -605,7 +627,7 @@ var drawSquare = function drawSquare(ctx, position, rotation, width, height, hue
 
 var drawTriangle = function drawTriangle(ctx, position, rotation, width, height, hue) {
   // console.log("triangle", position, rotation, width, height)
-  var color = hsla(hue, "100%", "50%", 0.75);
+  var color = hsla(hue, "60%", "50%", 0.75);
 
   ctx.save();
   ctx.fillStyle = color;

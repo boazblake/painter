@@ -1,5 +1,5 @@
 import m from "mithril"
-import Canvas from "./canvas"
+import Canvas from "../components/canvas"
 
 const Gallery = () => {
   return {

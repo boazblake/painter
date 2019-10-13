@@ -5,13 +5,18 @@ import {
   getWidth,
   getHeight,
   getHue
-} from "../model"
+} from "./model"
 
+// hsla(hue, saturation, lightness, alpha)
+// hue	0-360
+// saturation	0-100%
+// lightness	0-50-100%
+// alpha	0.0-1.0
 const hsla = (h, s, l, a) => `hsla(${h}, ${s}, ${l}, ${a})`
 
 const drawSquare = (ctx, position, rotation, width, height, hue) => {
   // console.log("square", position, rotation, width, height)
-  const color = hsla(hue, "100%", "50%", 0.75)
+  const color = hsla(hue, "60%", "50%", 0.75)
   ctx.save()
   ctx.fillStyle = color
   ctx.translate(position.x, position.y)
@@ -22,7 +27,7 @@ const drawSquare = (ctx, position, rotation, width, height, hue) => {
 
 const drawTriangle = (ctx, position, rotation, width, height, hue) => {
   // console.log("triangle", position, rotation, width, height)
-  const color = hsla(hue, "100%", "50%", 0.75)
+  const color = hsla(hue, "60%", "50%", 0.75)
 
   ctx.save()
   ctx.fillStyle = color
