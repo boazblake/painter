@@ -2,24 +2,26 @@ import m from "mithril"
 import Canvas from "../components/canvas"
 import Button from "../components/button"
 
-const Modal = () => {
+const Modal = ({ attrs: { close } }) => {
   return {
     view: ({ children, attrs: { close } }) =>
       m(
         ".modalBackground",
         {
-          onclick: () => close
+          onclick: () => close()
         },
         m(".modal", children)
       )
   }
 }
 
+const resetModal = ({ attrs: { mdl } }) => mdl.canvas(null)
+
 const Gallery = () => {
   return {
     show: false,
     close: (state) => (state.show = !state.show),
-    oninit: ({ attrs: { mdl } }) => mdl.canvas(null),
+    oninit: resetModal,
     view: ({ state, attrs: { mdl } }) => {
       return [
         m(
@@ -32,8 +34,8 @@ const Gallery = () => {
                 let ctx = dom.getContext("2d")
                 ctx.filter = "brightness(1)"
                 let image = ctx.getImageData(0, 0, mdl.width(), mdl.height())
-
                 mdl.canvas(image)
+                mdl.dom(dom)
                 state.close(state)
               },
               label: m(Canvas, { mdl, ctx: art, classList: "canvas" })
@@ -43,8 +45,13 @@ const Gallery = () => {
         state.show &&
           m(
             Modal,
+            {
+              close: () => {
+                resetModal({ attrs: { mdl } })
+                state.close(state)
+              }
+            },
             m(Canvas, {
-              close: state.close(state),
               ctx: mdl.canvas(),
               classList: "canvas"
             })

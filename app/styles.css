@@ -18,6 +18,7 @@
   align-content: center;
   height: 50px;
   padding: 10px 0;
+  z-index: 11;
 }
 
 .btn {
@@ -56,6 +57,7 @@
   width: fit-content;
   height: fit-content;
   border: none;
+  transition: width 0.6s;
 }
 
 .main {
@@ -84,11 +86,20 @@
 }
 
 canvas {
+  transition: box-shadow 0.2s;
   box-shadow: 0 10px 10px -5px;
 }
 
 .gallery > .paintBtn {
   margin-bottom: 20px;
+}
+
+.paintBtn > .canvas {
+  width: 100%;
+}
+
+.paintBtn > .canvas:hover {
+  box-shadow: 0 12px 12px -3px;
 }
 
 .portrait {
@@ -135,9 +146,6 @@ canvas {
 
 @media (min-width: 400px) and (max-width: 710px) {
   .gallery > .paintBtn {
-    width: 100%;
-  }
-  .paintBtn > .canvas {
     width: 100%;
   }
 }
