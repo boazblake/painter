@@ -1,8 +1,8 @@
 {
-  "name": "brunch-app",
-  "description": "Brunch.io application",
+  "name": "Painter",
+  "description": "mithril brunch",
   "private": true,
-  "author": "Brunch",
+  "author": "boazblake",
   "version": "0.0.1",
   "repository": "",
   "scripts": {
