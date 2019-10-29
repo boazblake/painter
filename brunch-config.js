@@ -3,16 +3,16 @@ exports.files = {
   javascripts: {
     joinTo: {
       "vendor.js": /^(?!app)/, // Files that are not in `app` dir.
-      "app.js": /^app/,
-    },
+      "app.js": /^app/
+    }
   },
-  stylesheets: { joinTo: { "app.css": "./*.css" } },
+  stylesheets: { joinTo: { "app.css": "./app/styles/*.css" } }
 }
 
 exports.plugins = {
-  babel: { presets: ["latest", "stage-0"] },
+  babel: { presets: ["latest", "stage-0"] }
 }
 
 exports.paths = {
-  public: "docs",
+  public: "docs"
 }
