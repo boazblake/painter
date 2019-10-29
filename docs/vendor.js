@@ -1,2 +1,2622 @@
-!function(){"use strict";var e="undefined"==typeof global?self:global;if("function"!=typeof e.require){var t={},n={},r={},i={}.hasOwnProperty,o=/^\.\.?(\/|$)/,l=function(e,t){for(var n,r=[],i=(o.test(t)?e+"/"+t:t).split("/"),l=0,a=i.length;l<a;l++)n=i[l],".."===n?r.pop():"."!==n&&""!==n&&r.push(n);return r.join("/")},a=function(e){return e.split("/").slice(0,-1).join("/")},u=function(t){return function(n){var r=l(a(t),n);return e.require(r,t)}},s=function(e,t){var r=v&&v.createHot(e),i={id:e,exports:{},hot:r};return n[e]=i,t(i.exports,u(e),i),i.exports},c=function(e){return r[e]?c(r[e]):e},f=function(e,t){return c(l(a(e),t))},d=function(e,r){null==r&&(r="/");var o=c(e);if(i.call(n,o))return n[o].exports;if(i.call(t,o))return s(o,t[o]);throw new Error("Cannot find module '"+e+"' from '"+r+"'")};d.alias=function(e,t){r[t]=e};var p=/\.[^.\/]+$/,h=/\/index(\.[^\/]+)?$/,m=function(e){if(p.test(e)){var t=e.replace(p,"");i.call(r,t)&&r[t].replace(p,"")!==t+"/index"||(r[t]=e)}if(h.test(e)){var n=e.replace(h,"");i.call(r,n)||(r[n]=e)}};d.register=d.define=function(e,r){if(e&&"object"==typeof e)for(var o in e)i.call(e,o)&&d.register(o,e[o]);else t[e]=r,delete n[e],m(e)},d.list=function(){var e=[];for(var n in t)i.call(t,n)&&e.push(n);return e};var v=e._hmr&&new e._hmr(f,d,t,n);d._cache=n,d.hmr=v&&v.wrap,d.brunch=!0,e.require=d}}(),function(){var e="undefined"==typeof window?this:window,t=function(e,t,n){var r={},i=function(t,n){var o;try{return o=e(n+"/node_modules/"+t)}catch(l){if(l.toString().indexOf("Cannot find module")===-1)throw l;if(n.indexOf("node_modules")!==-1){var a=n.split("/"),u=a.lastIndexOf("node_modules"),s=a.slice(0,u).join("/");return i(t,s)}}return r};return function(o){if(o in t&&(o=t[o]),o){if("."!==o[0]&&n){var l=i(o,n);if(l!==r)return l}return e(o)}}};require.register("mithril-stream/stream.js",function(e,n,r){n=t(n,{},"mithril-stream"),function(){!function(){"use strict";function e(n){function r(t){return arguments.length&&t!==e.SKIP&&(n=t,a(r)&&(r.changing(),r.state="active",o.forEach(function(e,t){e(l[t](n))}))),n}function i(){return u=e(),u.map(function(e){return e===!0&&(r.parents.forEach(function(e){e.unregisterChild(r)}),r.state="ended",r.parents.length=o.length=l.length=0),e}),u}var o=[],l=[];r.constructor=e,r.state=arguments.length&&n!==e.SKIP?"active":"pending",r.parents=[],r.changing=function(){a(r)&&(r.state="changing"),o.forEach(function(e){e.changing()})},r.map=function(t,i){var a="active"===r.state&&i!==e.SKIP?e(t(n)):e();return a.parents.push(r),o.push(a),l.push(t),a};var u;return r.toJSON=function(){return null!=n&&"function"==typeof n.toJSON?n.toJSON():n},r["fantasy-land/map"]=r.map,r["fantasy-land/ap"]=function(e){return t(function(e,t){return e()(t())},[e,r])},r.unregisterChild=function(e){var t=o.indexOf(e);t!==-1&&(o.splice(t,1),l.splice(t,1))},Object.defineProperty(r,"end",{get:function(){return u||i()}}),r}function t(t,n){var r=n.every(function(t){if(t.constructor!==e)throw new Error("Ensure that each item passed to stream.combine/stream.merge/lift is a stream");return"active"===t.state}),i=r?e(t.apply(null,n.concat([n]))):e(),o=[],l=n.map(function(l){return l.map(function(e){return o.push(l),(r||n.every(function(e){return"pending"!==e.state}))&&(r=!0,i(t.apply(null,n.concat([o]))),o=[]),e},e.SKIP)}),a=i.end.map(function(e){e===!0&&(l.forEach(function(e){e.end(!0)}),a.end(!0))});return i}function n(e){return t(function(){return e.map(function(e){return e()})},e)}function i(t,n,r){var i=r.map(function(r){var i=t(n,r);return i!==e.SKIP&&(n=i),i});return i(n),i}function o(e,n){var r=e.map(function(e){return e[0]}),i=t(function(){var t=arguments[arguments.length-1];return r.forEach(function(r,i){t.indexOf(r)>-1&&(n=e[i][1](n,r()))}),n},r);return i(n),i}function l(){var e=arguments[0],t=Array.prototype.slice.call(arguments,1);return n(t).map(function(t){return e.apply(void 0,t)})}function a(e){return"pending"===e.state||"active"===e.state||"changing"===e.state}e.SKIP={},e.lift=l,e.scan=i,e.merge=n,e.combine=t,e.scanMerge=o,e["fantasy-land/of"]=e;var u=!1;Object.defineProperty(e,"HALT",{get:function(){return u||console.log("HALT is deprecated and has been renamed to SKIP"),u=!0,e.SKIP}}),"undefined"!=typeof r?r.exports=e:"function"!=typeof window.m||"stream"in window.m?window.m={stream:e}:window.m.stream=e}()}()}),require.register("mithril/api/mount-redraw.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("../render/vnode");r.exports=function(t,n,r){function i(){if(u)throw new Error("Nested m.redraw.sync() call");u=!0;for(var n=0;n<a.length;n+=2)try{t(a[n],e(a[n+1]),o)}catch(i){r.error(i)}u=!1}function o(){s||(s=!0,n(function(){s=!1,i()}))}function l(n,r){if(null!=r&&null==r.view&&"function"!=typeof r)throw new TypeError("m.mount(element, component) expects a component, not a vnode");var i=a.indexOf(n);i>=0&&(a.splice(i,2),t(n,[],o)),null!=r&&(a.push(n,r),t(n,e(r),o))}var a=[],u=!1,s=!1;return o.sync=i,{mount:l,redraw:o}}}()}),require.register("mithril/api/router.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("../render/vnode"),t=n("../render/hyperscript"),i=n("../promise/promise"),o=n("../pathname/build"),l=n("../pathname/parse"),a=n("../pathname/compileTemplate"),u=n("../pathname/assign"),s={};r.exports=function(n,r){function c(e,t,r){if(e=o(e,t),null!=d){d();var i=r?r.state:null,l=r?r.title:null;r&&r.replace?n.history.replaceState(i,l,f.prefix+e):n.history.pushState(i,l,f.prefix+e)}else n.location.href=f.prefix+e}function f(t,o,w){function x(){function e(){if(a===o)throw new Error("Could not resolve default route "+o);c(o,null,{replace:!0})}function t(n){for(;n<k.length;n++)if(k[n].check(s)){var i=k[n].component,o=k[n].route,l=i,u=v=function(e){if(u===v){if(e===y)return t(n+1);p=null==e||"function"!=typeof e.view&&"function"!=typeof e?"div":e,h=s.params,m=a,v=null,g=i.render?i:null,2===j?r.redraw():(j=2,r.redraw.sync())}};return void(i.view||"function"==typeof i?(i={},u(l)):i.onmatch?E.then(function(){return i.onmatch(s.params,a,o)}).then(u,e):u("div"))}e()}q=!1;var i=n.location.hash;"#"!==f.prefix[0]&&(i=n.location.search+i,"?"!==f.prefix[0]&&(i=n.location.pathname+i,"/"!==i[0]&&(i="/"+i)));var a=i.concat().replace(/(?:%[a-f89][a-f0-9])+/gim,decodeURIComponent).slice(f.prefix.length),s=l(a);u(s.params,n.history.state),t(0)}if(null==t)throw new Error("Ensure the DOM element that was passed to `m.route` is not undefined");var b,j=0,k=Object.keys(w).map(function(e){if("/"!==e[0])throw new SyntaxError("Routes must start with a `/`");if(/:([^\/\.-]+)(\.{3})?:/.test(e))throw new SyntaxError("Route parameter names must be separated with either `/`, `.`, or `-`");return{route:e,component:w[e],check:a(e)}}),S="function"==typeof setImmediate?setImmediate:setTimeout,E=i.resolve(),q=!1;if(d=null,null!=o){var C=l(o);if(!k.some(function(e){return e.check(C)}))throw new ReferenceError("Default route doesn't match any known routes")}return d=function(){q||(q=!0,S(x))},"function"==typeof n.history.pushState?(b=function(){n.removeEventListener("popstate",d,!1)},n.addEventListener("popstate",d,!1)):"#"===f.prefix[0]&&(d=null,b=function(){n.removeEventListener("hashchange",x,!1)},n.addEventListener("hashchange",x,!1)),r.mount(t,{onbeforeupdate:function(){return j=j?2:1,!(!j||s===g)},oncreate:x,onremove:b,view:function(){if(j&&s!==g){var t=[e(p,h.key,h)];return g&&(t=g.render(t[0])),t}}})}var d,p,h,m,v,g=s,y=f.SKIP={};return f.set=function(e,t,n){null!=v&&(n=n||{},n.replace=!0),v=null,c(e,t,n)},f.get=function(){return m},f.prefix="#!",f.Link={view:function(e){var n,r,i=e.attrs.options,o={};u(o,e.attrs),o.selector=o.options=o.key=o.oninit=o.oncreate=o.onbeforeupdate=o.onupdate=o.onbeforeremove=o.onremove=null;var l=t(e.attrs.selector||"a",o,e.children);return(l.attrs.disabled=Boolean(l.attrs.disabled))?(l.attrs.href=null,l.attrs["aria-disabled"]="true",l.attrs.onclick=null):(n=l.attrs.onclick,r=l.attrs.href,l.attrs.href=f.prefix+r,l.attrs.onclick=function(e){var t;"function"==typeof n?t=n.call(e.currentTarget,e):null==n||"object"!=typeof n||"function"==typeof n.handleEvent&&n.handleEvent(e),t===!1||e.defaultPrevented||0!==e.button&&0!==e.which&&1!==e.which||e.currentTarget.target&&"_self"!==e.currentTarget.target||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||(e.preventDefault(),e.redraw=!1,f.set(r,null,i))}),l}},f.param=function(e){return h&&null!=e?h[e]:h},f}}()}),require.register("mithril/hyperscript.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("./render/hyperscript");e.trust=n("./render/trust"),e.fragment=n("./render/fragment"),r.exports=e}()}),require.register("mithril/index.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("./hyperscript"),t=n("./request"),i=n("./mount-redraw"),o=function(){return e.apply(this,arguments)};o.m=e,o.trust=e.trust,o.fragment=e.fragment,o.mount=i.mount,o.route=n("./route"),o.render=n("./render"),o.redraw=i.redraw,o.request=t.request,o.jsonp=t.jsonp,o.parseQueryString=n("./querystring/parse"),o.buildQueryString=n("./querystring/build"),o.parsePathname=n("./pathname/parse"),o.buildPathname=n("./pathname/build"),o.vnode=n("./render/vnode"),o.PromisePolyfill=n("./promise/polyfill"),r.exports=o}()}),require.register("mithril/mount-redraw.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("./render");r.exports=n("./api/mount-redraw")(e,requestAnimationFrame,console)}()}),require.register("mithril/pathname/assign.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";r.exports=Object.assign||function(e,t){t&&Object.keys(t).forEach(function(n){e[n]=t[n]})}}()}),require.register("mithril/pathname/build.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("../querystring/build"),t=n("./assign");r.exports=function(n,r){if(/:([^\/\.-]+)(\.{3})?:/.test(n))throw new SyntaxError("Template parameter names *must* be separated");if(null==r)return n;var i=n.indexOf("?"),o=n.indexOf("#"),l=o<0?n.length:o,a=i<0?l:i,u=n.slice(0,a),s={};t(s,r);var c=u.replace(/:([^\/\.-]+)(\.{3})?/g,function(e,t,n){return delete s[t],null==r[t]?e:n?r[t]:encodeURIComponent(String(r[t]))}),f=c.indexOf("?"),d=c.indexOf("#"),p=d<0?c.length:d,h=f<0?p:f,m=c.slice(0,h);i>=0&&(m+=n.slice(i,l)),f>=0&&(m+=(i<0?"?":"&")+c.slice(f,p));var v=e(s);return v&&(m+=(i<0&&f<0?"?":"&")+v),o>=0&&(m+=n.slice(o)),d>=0&&(m+=(o<0?"":"&")+c.slice(d)),m}}()}),require.register("mithril/pathname/compileTemplate.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("./parse");r.exports=function(t){var n=e(t),r=Object.keys(n.params),i=[],o=new RegExp("^"+n.path.replace(/:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,function(e,t,n){return null==t?"\\"+e:(i.push({k:t,r:"..."===n}),"..."===n?"(.*)":"."===n?"([^/]+)\\.":"([^/]+)"+(n||""))})+"$");return function(e){for(var t=0;t<r.length;t++)if(n.params[r[t]]!==e.params[r[t]])return!1;if(!i.length)return o.test(e.path);var l=o.exec(e.path);if(null==l)return!1;for(var t=0;t<i.length;t++)e.params[i[t].k]=i[t].r?l[t+1]:decodeURIComponent(l[t+1]);return!0}}}()}),require.register("mithril/pathname/parse.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("../querystring/parse");r.exports=function(t){var n=t.indexOf("?"),r=t.indexOf("#"),i=r<0?t.length:r,o=n<0?i:n,l=t.slice(0,o).replace(/\/{2,}/g,"/");return l?("/"!==l[0]&&(l="/"+l),l.length>1&&"/"===l[l.length-1]&&(l=l.slice(0,-1))):l="/",{path:l,params:n<0?{}:e(t.slice(n+1,i))}}}()}),require.register("mithril/promise/polyfill.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=function(t){function n(e,t){return function n(a){var f;try{if(!t||null==a||"object"!=typeof a&&"function"!=typeof a||"function"!=typeof(f=a.then))c(function(){t||0!==e.length||console.error("Possible unhandled promise rejection:",a);for(var r=0;r<e.length;r++)e[r](a);o.length=0,l.length=0,s.state=t,s.retry=function(){n(a)}});else{if(a===i)throw new TypeError("Promise can't be resolved w/ itself");r(f.bind(a))}}catch(d){u(d)}}}function r(e){function t(e){return function(t){n++>0||e(t)}}var n=0,r=t(u);try{e(t(a),r)}catch(i){r(i)}}if(!(this instanceof e))throw new Error("Promise must be called with `new`");if("function"!=typeof t)throw new TypeError("executor must be a function");var i=this,o=[],l=[],a=n(o,!0),u=n(l,!1),s=i._instance={resolvers:o,rejectors:l},c="function"==typeof setImmediate?setImmediate:setTimeout;r(t)};e.prototype.then=function(t,n){function r(e,t,n,r){t.push(function(t){if("function"!=typeof e)n(t);else try{i(e(t))}catch(r){o&&o(r)}}),"function"==typeof a.retry&&r===a.state&&a.retry()}var i,o,l=this,a=l._instance,u=new e(function(e,t){i=e,o=t});return r(t,a.resolvers,i,!0),r(n,a.rejectors,o,!1),u},e.prototype["catch"]=function(e){return this.then(null,e)},e.prototype["finally"]=function(t){return this.then(function(n){return e.resolve(t()).then(function(){return n})},function(n){return e.resolve(t()).then(function(){return e.reject(n)})})},e.resolve=function(t){return t instanceof e?t:new e(function(e){e(t)})},e.reject=function(t){return new e(function(e,n){n(t)})},e.all=function(t){return new e(function(e,n){var r=t.length,i=0,o=[];if(0===t.length)e([]);else for(var l=0;l<t.length;l++)!function(l){function a(t){i++,o[l]=t,i===r&&e(o)}null==t[l]||"object"!=typeof t[l]&&"function"!=typeof t[l]||"function"!=typeof t[l].then?a(t[l]):t[l].then(a,n)}(l)})},e.race=function(t){return new e(function(e,n){for(var r=0;r<t.length;r++)t[r].then(e,n)})},r.exports=e}()}),require.register("mithril/promise/promise.js",function(n,r,i){r=t(r,{},"mithril"),function(){"use strict";var t=r("./polyfill");"undefined"!=typeof window?("undefined"==typeof window.Promise?window.Promise=t:window.Promise.prototype["finally"]||(window.Promise.prototype["finally"]=t.prototype["finally"]),i.exports=window.Promise):"undefined"!=typeof e?("undefined"==typeof e.Promise?e.Promise=t:e.Promise.prototype["finally"]||(e.Promise.prototype["finally"]=t.prototype["finally"]),i.exports=e.Promise):i.exports=t}()}),require.register("mithril/querystring/build.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";r.exports=function(e){function t(e,r){if(Array.isArray(r))for(var i=0;i<r.length;i++)t(e+"["+i+"]",r[i]);else if("[object Object]"===Object.prototype.toString.call(r))for(var i in r)t(e+"["+i+"]",r[i]);else n.push(encodeURIComponent(e)+(null!=r&&""!==r?"="+encodeURIComponent(r):""))}if("[object Object]"!==Object.prototype.toString.call(e))return"";var n=[];for(var r in e)t(r,e[r]);return n.join("&")}}()}),require.register("mithril/querystring/parse.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";r.exports=function(e){if(""===e||null==e)return{};"?"===e.charAt(0)&&(e=e.slice(1));for(var t=e.split("&"),n={},r={},i=0;i<t.length;i++){var o=t[i].split("="),l=decodeURIComponent(o[0]),a=2===o.length?decodeURIComponent(o[1]):"";"true"===a?a=!0:"false"===a&&(a=!1);var u=l.split(/\]\[?|\[/),s=r;l.indexOf("[")>-1&&u.pop();for(var c=0;c<u.length;c++){var f=u[c],d=u[c+1],p=""==d||!isNaN(parseInt(d,10));if(""===f){var l=u.slice(0,c).join();null==n[l]&&(n[l]=Array.isArray(s)?s.length:0),f=n[l]++}else if("__proto__"===f)break;if(c===u.length-1)s[f]=a;else{var h=Object.getOwnPropertyDescriptor(s,f);null!=h&&(h=h.value),null==h&&(s[f]=h=p?[]:{}),s=h}}}return r}}()}),require.register("mithril/render.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";r.exports=n("./render/render")(window)}()}),require.register("mithril/render/fragment.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("../render/vnode"),t=n("./hyperscriptVnode");r.exports=function(){var n=t.apply(0,arguments);return n.tag="[",n.children=e.normalizeChildren(n.children),n}}()}),require.register("mithril/render/hyperscript.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";function e(e){for(var t in e)if(c.call(e,t))return!1;return!0}function t(e){for(var t,n="div",r=[],i={};t=u.exec(e);){var o=t[1],l=t[2];if(""===o&&""!==l)n=l;else if("#"===o)i.id=l;else if("."===o)r.push(l);else if("["===t[3][0]){var a=t[6];a&&(a=a.replace(/\\(["'])/g,"$1").replace(/\\\\/g,"\\")),"class"===t[4]?r.push(a):i[t[4]]=""===a?a:a||!0}}return r.length>0&&(i.className=r.join(" ")),s[e]={tag:n,attrs:i}}function i(t,n){var r=n.attrs,i=l.normalizeChildren(n.children),o=c.call(r,"class"),a=o?r["class"]:r.className;if(n.tag=t.tag,n.attrs=null,n.children=void 0,!e(t.attrs)&&!e(r)){var u={};for(var s in r)c.call(r,s)&&(u[s]=r[s]);r=u}for(var s in t.attrs)c.call(t.attrs,s)&&"className"!==s&&!c.call(r,s)&&(r[s]=t.attrs[s]);null==a&&null==t.attrs.className||(r.className=null!=a?null!=t.attrs.className?String(t.attrs.className)+" "+String(a):a:null!=t.attrs.className?t.attrs.className:null),o&&(r["class"]=null);for(var s in r)if(c.call(r,s)&&"key"!==s){n.attrs=r;break}return Array.isArray(i)&&1===i.length&&null!=i[0]&&"#"===i[0].tag?n.text=i[0].children:n.children=i,n}function o(e){if(null==e||"string"!=typeof e&&"function"!=typeof e&&"function"!=typeof e.view)throw Error("The selector must be either a string or a component.");var n=a.apply(1,arguments);return"string"==typeof e&&(n.children=l.normalizeChildren(n.children),"["!==e)?i(s[e]||t(e),n):(n.tag=e,n)}var l=n("../render/vnode"),a=n("./hyperscriptVnode"),u=/(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g,s={},c={}.hasOwnProperty;r.exports=o}()}),require.register("mithril/render/hyperscriptVnode.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("../render/vnode");r.exports=function(){var t,n=arguments[this],r=this+1;if(null==n?n={}:("object"!=typeof n||null!=n.tag||Array.isArray(n))&&(n={},r=this),arguments.length===r+1)t=arguments[r],Array.isArray(t)||(t=[t]);else for(t=[];r<arguments.length;)t.push(arguments[r++]);return e("",n.key,n,t)}}()}),require.register("mithril/render/render.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("../render/vnode");r.exports=function(t){function n(e){return e.attrs&&e.attrs.xmlns||Z[e.tag]}function r(e,t){if(e.state!==t)throw new Error("`vnode.state` must not be modified")}function i(e){var t=e.state;try{return this.apply(t,arguments)}finally{r(e,t)}}function o(){try{return X.activeElement}catch(e){return null}}function l(e,t,n,r,i,o,l){for(var u=n;u<r;u++){var s=t[u];null!=s&&a(e,s,i,l,o)}}function a(e,t,n,r,i){var o=t.tag;if("string"==typeof o)switch(t.state={},null!=t.attrs&&V(t.attrs,t,n),o){case"#":u(e,t,i);break;case"<":s(e,t,r,i);break;case"[":c(e,t,n,r,i);break;default:f(e,t,n,r,i)}else p(e,t,n,r,i)}function u(e,t,n){t.dom=X.createTextNode(t.children),q(e,t.dom,n)}function s(e,t,n,r){var i=t.children.match(/^\s*?<(\w+)/im)||[],o=X.createElement(W[i[1]]||"div");"http://www.w3.org/2000/svg"===n?(o.innerHTML='<svg xmlns="http://www.w3.org/2000/svg">'+t.children+"</svg>",o=o.firstChild):o.innerHTML=t.children,t.dom=o.firstChild,t.domSize=o.childNodes.length,t.instance=[];for(var l,a=X.createDocumentFragment();l=o.firstChild;)t.instance.push(l),a.appendChild(l);q(e,a,r)}function c(e,t,n,r,i){var o=X.createDocumentFragment();if(null!=t.children){var a=t.children;l(o,a,0,a.length,n,null,r)}t.dom=o.firstChild,t.domSize=o.childNodes.length,q(e,o,i)}function f(t,r,i,o,a){var u=r.tag,s=r.attrs,c=s&&s.is;o=n(r)||o;var f=o?c?X.createElementNS(o,u,{is:c}):X.createElementNS(o,u):c?X.createElement(u,{is:c}):X.createElement(u);if(r.dom=f,null!=s&&N(r,s,o),q(t,f,a),!C(r)&&(null!=r.text&&(""!==r.text?f.textContent=r.text:r.children=[e("#",void 0,void 0,r.text,void 0,void 0)]),null!=r.children)){var d=r.children;l(f,d,0,d.length,i,null,o),"select"===r.tag&&null!=s&&$(r,s)}}function d(t,n){var r;if("function"==typeof t.tag.view){if(t.state=Object.create(t.tag),r=t.state.view,null!=r.$$reentrantLock$$)return;r.$$reentrantLock$$=!0}else{if(t.state=void 0,r=t.tag,null!=r.$$reentrantLock$$)return;r.$$reentrantLock$$=!0,t.state=null!=t.tag.prototype&&"function"==typeof t.tag.prototype.view?new t.tag(t):t.tag(t)}if(V(t.state,t,n),null!=t.attrs&&V(t.attrs,t,n),t.instance=e.normalize(i.call(t.state.view,t)),t.instance===t)throw Error("A view cannot return the vnode it received as argument");r.$$reentrantLock$$=null}function p(e,t,n,r,i){d(t,n),null!=t.instance?(a(e,t.instance,n,r,i),t.dom=t.instance.dom,t.domSize=null!=t.dom?t.instance.domSize:0):t.domSize=0}function h(e,t,n,r,i,o){if(t!==n&&(null!=t||null!=n))if(null==t||0===t.length)l(e,n,0,n.length,r,i,o);else if(null==n||0===n.length)O(e,t,0,t.length);else{var u=null!=t[0]&&null!=t[0].key,s=null!=n[0]&&null!=n[0].key,c=0,f=0;if(!u)for(;f<t.length&&null==t[f];)f++;if(!s)for(;c<n.length&&null==n[c];)c++;if(null===s&&null==u)return;if(u!==s)O(e,t,f,t.length),l(e,n,c,n.length,r,i,o);else if(s){for(var d,p,h,v,g,y,w=t.length-1,x=n.length-1;w>=f&&x>=c&&(v=t[w],g=n[x],v.key===g.key);)v!==g&&m(e,v,g,r,i,o),null!=g.dom&&(i=g.dom),w--,x--;for(;w>=f&&x>=c&&(p=t[f],h=n[c],p.key===h.key);)f++,c++,p!==h&&m(e,p,h,r,k(t,f,i),o);for(;w>=f&&x>=c&&c!==x&&p.key===g.key&&v.key===h.key;)y=k(t,f,i),S(e,v,y),v!==h&&m(e,v,h,r,y,o),++c<=--x&&S(e,p,i),p!==g&&m(e,p,g,r,i,o),null!=g.dom&&(i=g.dom),f++,w--,v=t[w],g=n[x],p=t[f],h=n[c];for(;w>=f&&x>=c&&v.key===g.key;)v!==g&&m(e,v,g,r,i,o),null!=g.dom&&(i=g.dom),w--,x--,v=t[w],g=n[x];if(c>x)O(e,t,f,w+1);else if(f>w)l(e,n,c,x+1,r,i,o);else{var d,E,q=i,C=x-c+1,A=new Array(C),z=0,_=0,N=2147483647,T=0;for(_=0;_<C;_++)A[_]=-1;for(_=x;_>=c;_--){null==d&&(d=b(t,f,w+1)),g=n[_];var I=d[g.key];null!=I&&(N=I<N?I:-1,A[_-c]=I,v=t[I],t[I]=null,v!==g&&m(e,v,g,r,i,o),null!=g.dom&&(i=g.dom),T++)}if(i=q,T!==w-f+1&&O(e,t,f,w+1),0===T)l(e,n,c,x+1,r,i,o);else if(N===-1)for(E=j(A),z=E.length-1,_=x;_>=c;_--)h=n[_],A[_-c]===-1?a(e,h,r,o,i):E[z]===_-c?z--:S(e,h,i),null!=h.dom&&(i=n[_].dom);else for(_=x;_>=c;_--)h=n[_],A[_-c]===-1&&a(e,h,r,o,i),null!=h.dom&&(i=n[_].dom)}}else{var $=t.length<n.length?t.length:n.length;for(c=c<f?c:f;c<$;c++)p=t[c],h=n[c],p===h||null==p&&null==h||(null==p?a(e,h,r,o,k(t,c+1,i)):null==h?P(e,p):m(e,p,h,r,k(t,c+1,i),o));t.length>$&&O(e,t,c,t.length),n.length>$&&l(e,n,c,n.length,r,i,o)}}}function m(e,t,n,r,i,o){var l=t.tag,u=n.tag;if(l===u){if(n.state=t.state,n.events=t.events,Q(n,t))return;if("string"==typeof l)switch(null!=n.attrs&&B(n.attrs,n,r),l){case"#":v(t,n);break;case"<":g(e,t,n,o,i);break;case"[":y(e,t,n,r,i,o);break;default:w(t,n,r,o)}else x(e,t,n,r,i,o)}else P(e,t),a(e,n,r,o,i)}function v(e,t){e.children.toString()!==t.children.toString()&&(e.dom.nodeValue=t.children),t.dom=e.dom}function g(e,t,n,r,i){t.children!==n.children?(A(e,t),s(e,n,r,i)):(n.dom=t.dom,n.domSize=t.domSize,n.instance=t.instance)}function y(e,t,n,r,i,o){h(e,t.children,n.children,r,i,o);var l=0,a=n.children;if(n.dom=null,null!=a){for(var u=0;u<a.length;u++){var s=a[u];null!=s&&null!=s.dom&&(null==n.dom&&(n.dom=s.dom),l+=s.domSize||1)}1!==l&&(n.domSize=l)}}function w(t,r,i,o){var l=r.dom=t.dom;o=n(r)||o,"textarea"===r.tag&&(null==r.attrs&&(r.attrs={}),null!=r.text&&(r.attrs.value=r.text,r.text=void 0)),L(r,t.attrs,r.attrs,o),C(r)||(null!=t.text&&null!=r.text&&""!==r.text?t.text.toString()!==r.text.toString()&&(t.dom.firstChild.nodeValue=r.text):(null!=t.text&&(t.children=[e("#",void 0,void 0,t.text,void 0,t.dom.firstChild)]),null!=r.text&&(r.children=[e("#",void 0,void 0,r.text,void 0,void 0)]),h(l,t.children,r.children,i,null,o)))}function x(t,n,r,o,l,u){if(r.instance=e.normalize(i.call(r.state.view,r)),r.instance===r)throw Error("A view cannot return the vnode it received as argument");B(r.state,r,o),null!=r.attrs&&B(r.attrs,r,o),null!=r.instance?(null==n.instance?a(t,r.instance,o,u,l):m(t,n.instance,r.instance,o,l,u),r.dom=r.instance.dom,r.domSize=r.instance.domSize):null!=n.instance?(P(t,n.instance),r.dom=void 0,r.domSize=0):(r.dom=n.dom,r.domSize=n.domSize)}function b(e,t,n){for(var r=Object.create(null);t<n;t++){var i=e[t];if(null!=i){var o=i.key;null!=o&&(r[o]=t)}}return r}function j(e){for(var t=[0],n=0,r=0,i=0,o=Y.length=e.length,i=0;i<o;i++)Y[i]=e[i];for(var i=0;i<o;++i)if(e[i]!==-1){var l=t[t.length-1];if(e[l]<e[i])Y[i]=l,t.push(i);else{for(n=0,r=t.length-1;n<r;){var a=(n>>>1)+(r>>>1)+(n&r&1);e[t[a]]<e[i]?n=a+1:r=a}e[i]<e[t[n]]&&(n>0&&(Y[i]=t[n-1]),t[n]=i)}}for(n=t.length,r=t[n-1];n-- >0;)t[n]=r,r=Y[r];return Y.length=0,t}function k(e,t,n){for(;t<e.length;t++)if(null!=e[t]&&null!=e[t].dom)return e[t].dom;return n}function S(e,t,n){var r=X.createDocumentFragment();E(e,r,t),q(e,r,n)}function E(e,t,n){for(;null!=n.dom&&n.dom.parentNode===e;){if("string"!=typeof n.tag){if(n=n.instance,null!=n)continue}else if("<"===n.tag)for(var r=0;r<n.instance.length;r++)t.appendChild(n.instance[r]);else if("["!==n.tag)t.appendChild(n.dom);else if(1===n.children.length){if(n=n.children[0],null!=n)continue}else for(var r=0;r<n.children.length;r++){var i=n.children[r];null!=i&&E(e,t,i)}break}}function q(e,t,n){null!=n?e.insertBefore(t,n):e.appendChild(t)}function C(e){if(null==e.attrs||null==e.attrs.contenteditable&&null==e.attrs.contentEditable)return!1;var t=e.children;if(null!=t&&1===t.length&&"<"===t[0].tag){var n=t[0].children;e.dom.innerHTML!==n&&(e.dom.innerHTML=n)}else if(null!=e.text||null!=t&&0!==t.length)throw new Error("Child node of a contenteditable must be trusted");return!0}function O(e,t,n,r){for(var i=n;i<r;i++){var o=t[i];null!=o&&P(e,o)}}function P(e,t){function n(){r(t,u),_(t),z(e,t)}var o,l,a=0,u=t.state;if("string"!=typeof t.tag&&"function"==typeof t.state.onbeforeremove){var s=i.call(t.state.onbeforeremove,t);null!=s&&"function"==typeof s.then&&(a=1,o=s)}if(t.attrs&&"function"==typeof t.attrs.onbeforeremove){var s=i.call(t.attrs.onbeforeremove,t);null!=s&&"function"==typeof s.then&&(a|=2,l=s)}if(r(t,u),a){if(null!=o){var c=function(){1&a&&(a&=2,a||n())};o.then(c,c)}if(null!=l){var c=function(){2&a&&(a&=1,a||n())};l.then(c,c)}}else _(t),z(e,t)}function A(e,t){for(var n=0;n<t.instance.length;n++)e.removeChild(t.instance[n])}function z(e,t){for(;null!=t.dom&&t.dom.parentNode===e;){if("string"!=typeof t.tag){if(t=t.instance,null!=t)continue}else if("<"===t.tag)A(e,t);else{if("["!==t.tag&&(e.removeChild(t.dom),!Array.isArray(t.children)))break;if(1===t.children.length){if(t=t.children[0],null!=t)continue}else for(var n=0;n<t.children.length;n++){var r=t.children[n];null!=r&&z(e,r)}}break}}function _(e){if("string"!=typeof e.tag&&"function"==typeof e.state.onremove&&i.call(e.state.onremove,e),e.attrs&&"function"==typeof e.attrs.onremove&&i.call(e.attrs.onremove,e),"string"!=typeof e.tag)null!=e.instance&&_(e.instance);else{var t=e.children;if(Array.isArray(t))for(var n=0;n<t.length;n++){var r=t[n];null!=r&&_(r)}}}function N(e,t,n){for(var r in t)T(e,r,null,t[r],n)}function T(e,t,n,r,i){if("key"!==t&&"is"!==t&&null!=r&&!K(t)&&(n!==r||R(e,t)||"object"==typeof r)){if("o"===t[0]&&"n"===t[1])return J(e,t,r);if("xlink:"===t.slice(0,6))e.dom.setAttributeNS("http://www.w3.org/1999/xlink",t.slice(6),r);else if("style"===t)U(e.dom,n,r);else if(M(e,t,i)){if("value"===t){if(("input"===e.tag||"textarea"===e.tag)&&e.dom.value===""+r&&e.dom===o())return;if("select"===e.tag&&null!==n&&e.dom.value===""+r)return;if("option"===e.tag&&null!==n&&e.dom.value===""+r)return}"input"===e.tag&&"type"===t?e.dom.setAttribute(t,r):e.dom[t]=r}else"boolean"==typeof r?r?e.dom.setAttribute(t,""):e.dom.removeAttribute(t):e.dom.setAttribute("className"===t?"class":t,r)}}function I(e,t,n,r){if("key"!==t&&"is"!==t&&null!=n&&!K(t))if("o"!==t[0]||"n"!==t[1]||K(t))if("style"===t)U(e.dom,n,null);else if(!M(e,t,r)||"className"===t||"value"===t&&("option"===e.tag||"select"===e.tag&&e.dom.selectedIndex===-1&&e.dom===o())||"input"===e.tag&&"type"===t){var i=t.indexOf(":");i!==-1&&(t=t.slice(i+1)),n!==!1&&e.dom.removeAttribute("className"===t?"class":t)}else e.dom[t]=null;else J(e,t,void 0)}function $(e,t){if("value"in t)if(null===t.value)e.dom.selectedIndex!==-1&&(e.dom.value=null);else{var n=""+t.value;e.dom.value===n&&e.dom.selectedIndex!==-1||(e.dom.value=n)}"selectedIndex"in t&&T(e,"selectedIndex",null,t.selectedIndex,void 0)}function L(e,t,n,r){if(null!=n)for(var i in n)T(e,i,t&&t[i],n[i],r);var o;if(null!=t)for(var i in t)null==(o=t[i])||null!=n&&null!=n[i]||I(e,i,o,r)}function R(e,t){return"value"===t||"checked"===t||"selectedIndex"===t||"selected"===t&&e.dom===o()||"option"===e.tag&&e.dom.parentNode===X.activeElement}function K(e){return"oninit"===e||"oncreate"===e||"onupdate"===e||"onremove"===e||"onbeforeremove"===e||"onbeforeupdate"===e}function M(e,t,n){return void 0===n&&(e.tag.indexOf("-")>-1||null!=e.attrs&&e.attrs.is||"href"!==t&&"list"!==t&&"form"!==t&&"width"!==t&&"height"!==t)&&t in e.dom}function D(e){return"-"+e.toLowerCase()}function H(e){return"-"===e[0]&&"-"===e[1]?e:"cssFloat"===e?"float":e.replace(ee,D)}function U(e,t,n){if(t===n);else if(null==n)e.style.cssText="";else if("object"!=typeof n)e.style.cssText=n;else if(null==t||"object"!=typeof t){e.style.cssText="";for(var r in n){var i=n[r];null!=i&&e.style.setProperty(H(r),String(i))}}else{for(var r in n){var i=n[r];null!=i&&(i=String(i))!==String(t[r])&&e.style.setProperty(H(r),i)}for(var r in t)null!=t[r]&&null==n[r]&&e.style.removeProperty(H(r))}}function F(){this._=G}function J(e,t,n){if(null!=e.events){if(e.events[t]===n)return;null==n||"function"!=typeof n&&"object"!=typeof n?(null!=e.events[t]&&e.dom.removeEventListener(t.slice(2),e.events,!1),e.events[t]=void 0):(null==e.events[t]&&e.dom.addEventListener(t.slice(2),e.events,!1),e.events[t]=n)}else null==n||"function"!=typeof n&&"object"!=typeof n||(e.events=new F,e.dom.addEventListener(t.slice(2),e.events,!1),e.events[t]=n)}function V(e,t,n){"function"==typeof e.oninit&&i.call(e.oninit,t),"function"==typeof e.oncreate&&n.push(i.bind(e.oncreate,t))}function B(e,t,n){"function"==typeof e.onupdate&&n.push(i.bind(e.onupdate,t))}function Q(e,t){do{if(null!=e.attrs&&"function"==typeof e.attrs.onbeforeupdate){var n=i.call(e.attrs.onbeforeupdate,e,t);if(void 0!==n&&!n)break}if("string"!=typeof e.tag&&"function"==typeof e.state.onbeforeupdate){var n=i.call(e.state.onbeforeupdate,e,t);if(void 0!==n&&!n)break}return!1}while(!1);return e.dom=t.dom,e.domSize=t.domSize,e.instance=t.instance,e.attrs=t.attrs,e.children=t.children,e.text=t.text,!0}var G,X=t&&t.document,Z={svg:"http://www.w3.org/2000/svg",math:"http://www.w3.org/1998/Math/MathML"},W={caption:"table",thead:"table",tbody:"table",tfoot:"table",tr:"tbody",th:"tr",td:"tr",colgroup:"table",col:"colgroup"},Y=[],ee=/[A-Z]/g;return F.prototype=Object.create(null),F.prototype.handleEvent=function(e){var t,n=this["on"+e.type];"function"==typeof n?t=n.call(e.currentTarget,e):"function"==typeof n.handleEvent&&n.handleEvent(e),this._&&e.redraw!==!1&&(0,this._)(),t===!1&&(e.preventDefault(),e.stopPropagation())},function(t,n,r){if(!t)throw new TypeError("Ensure the DOM element being passed to m.route/m.mount/m.render is not undefined.");var i=[],l=o(),a=t.namespaceURI;null==t.vnodes&&(t.textContent=""),n=e.normalizeChildren(Array.isArray(n)?n:[n]);var u=G;try{G="function"==typeof r?r:void 0,h(t,t.vnodes,n,i,null,"http://www.w3.org/1999/xhtml"===a?void 0:a)}finally{G=u}t.vnodes=n,null!=l&&o()!==l&&"function"==typeof l.focus&&l.focus();for(var s=0;s<i.length;s++)i[s]()}}}()}),require.register("mithril/render/trust.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("../render/vnode");r.exports=function(t){return null==t&&(t=""),e("<",void 0,void 0,t,void 0,void 0)}}()}),require.register("mithril/render/vnode.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";function e(e,t,n,r,i,o){return{tag:e,key:t,attrs:n,children:r,text:i,dom:o,domSize:void 0,state:void 0,events:void 0,instance:void 0}}e.normalize=function(t){return Array.isArray(t)?e("[",void 0,void 0,e.normalizeChildren(t),void 0,void 0):null==t||"boolean"==typeof t?null:"object"==typeof t?t:e("#",void 0,void 0,String(t),void 0,void 0)},e.normalizeChildren=function(t){var n=[];if(t.length){for(var r=null!=t[0]&&null!=t[0].key,i=1;i<t.length;i++)if((null!=t[i]&&null!=t[i].key)!==r)throw new TypeError("Vnodes must either always have keys or never have keys!");for(var i=0;i<t.length;i++)n[i]=e.normalize(t[i]);
-}return n},r.exports=e}()}),require.register("mithril/request.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("./promise/promise"),t=n("./mount-redraw");r.exports=n("./request/request")(window,e,t.redraw)}()}),require.register("mithril/request/request.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("../pathname/build");r.exports=function(t,n,r){function i(e){return new n(e)}function o(t){return function(o,l){function a(){0===--c&&"function"==typeof r&&r()}function u(e){var t=e.then;return e.constructor=i,e.then=function(){c++;var n=t.apply(e,arguments);return n.then(a,function(e){if(a(),0===c)throw e}),u(n)},e}"string"!=typeof o?(l=o,o=o.url):null==l&&(l={});var s=new n(function(n,r){t(e(o,l.params),l,function(e){if("function"==typeof l.type)if(Array.isArray(e))for(var t=0;t<e.length;t++)e[t]=new l.type(e[t]);else e=new l.type(e);n(e)},r)});if(l.background===!0)return s;var c=0;return u(s)}}function l(e,t){for(var n in e.headers)if({}.hasOwnProperty.call(e.headers,n)&&t.test(n))return!0;return!1}var a=0;return i.prototype=n.prototype,i.__proto__=n,{request:o(function(e,n,r,i){var o,a=null!=n.method?n.method.toUpperCase():"GET",u=n.body,s=!(null!=n.serialize&&n.serialize!==JSON.serialize||u instanceof t.FormData),c=n.responseType||("function"==typeof n.extract?"":"json"),f=new t.XMLHttpRequest,d=!1,p=f,h=f.abort;f.abort=function(){d=!0,h.call(this)},f.open(a,e,n.async!==!1,"string"==typeof n.user?n.user:void 0,"string"==typeof n.password?n.password:void 0),s&&null!=u&&!l(n,/^content-type$/i)&&f.setRequestHeader("Content-Type","application/json; charset=utf-8"),"function"==typeof n.deserialize||l(n,/^accept$/i)||f.setRequestHeader("Accept","application/json, text/*"),n.withCredentials&&(f.withCredentials=n.withCredentials),n.timeout&&(f.timeout=n.timeout),f.responseType=c;for(var m in n.headers)({}).hasOwnProperty.call(n.headers,m)&&f.setRequestHeader(m,n.headers[m]);f.onreadystatechange=function(t){if(!d&&4===t.target.readyState)try{var o,l=t.target.status>=200&&t.target.status<300||304===t.target.status||/^file:\/\//i.test(e),a=t.target.response;if("json"===c?t.target.responseType||"function"==typeof n.extract||(a=JSON.parse(t.target.responseText)):c&&"text"!==c||null==a&&(a=t.target.responseText),"function"==typeof n.extract?(a=n.extract(t.target,n),l=!0):"function"==typeof n.deserialize&&(a=n.deserialize(a)),l)r(a);else{try{o=t.target.responseText}catch(u){o=a}var s=new Error(o);s.code=t.target.status,s.response=a,i(s)}}catch(u){i(u)}},"function"==typeof n.config&&(f=n.config(f,n,e)||f,f!==p&&(o=f.abort,f.abort=function(){d=!0,o.call(this)})),null==u?f.send():"function"==typeof n.serialize?f.send(n.serialize(u)):u instanceof t.FormData?f.send(u):f.send(JSON.stringify(u))}),jsonp:o(function(e,n,r,i){var o=n.callbackName||"_mithril_"+Math.round(1e16*Math.random())+"_"+a++,l=t.document.createElement("script");t[o]=function(e){delete t[o],l.parentNode.removeChild(l),r(e)},l.onerror=function(){delete t[o],l.parentNode.removeChild(l),i(new Error("JSONP request failed"))},l.src=e+(e.indexOf("?")<0?"?":"&")+encodeURIComponent(n.callbackKey||"callback")+"="+encodeURIComponent(o),t.document.documentElement.appendChild(l)})}}}()}),require.register("mithril/route.js",function(e,n,r){n=t(n,{},"mithril"),function(){"use strict";var e=n("./mount-redraw");r.exports=n("./api/router")(window,e)}()}),require.alias("mithril-stream/stream.js","mithril-stream"),require.register("___globals___",function(e,t,n){})}(),require("___globals___");
+(function() {
+  'use strict';
+
+  var globals = typeof global === 'undefined' ? self : global;
+  if (typeof globals.require === 'function') return;
+
+  var modules = {};
+  var cache = {};
+  var aliases = {};
+  var has = {}.hasOwnProperty;
+
+  var expRe = /^\.\.?(\/|$)/;
+  var expand = function(root, name) {
+    var results = [], part;
+    var parts = (expRe.test(name) ? root + '/' + name : name).split('/');
+    for (var i = 0, length = parts.length; i < length; i++) {
+      part = parts[i];
+      if (part === '..') {
+        results.pop();
+      } else if (part !== '.' && part !== '') {
+        results.push(part);
+      }
+    }
+    return results.join('/');
+  };
+
+  var dirname = function(path) {
+    return path.split('/').slice(0, -1).join('/');
+  };
+
+  var localRequire = function(path) {
+    return function expanded(name) {
+      var absolute = expand(dirname(path), name);
+      return globals.require(absolute, path);
+    };
+  };
+
+  var initModule = function(name, definition) {
+    var hot = hmr && hmr.createHot(name);
+    var module = {id: name, exports: {}, hot: hot};
+    cache[name] = module;
+    definition(module.exports, localRequire(name), module);
+    return module.exports;
+  };
+
+  var expandAlias = function(name) {
+    return aliases[name] ? expandAlias(aliases[name]) : name;
+  };
+
+  var _resolve = function(name, dep) {
+    return expandAlias(expand(dirname(name), dep));
+  };
+
+  var require = function(name, loaderPath) {
+    if (loaderPath == null) loaderPath = '/';
+    var path = expandAlias(name);
+
+    if (has.call(cache, path)) return cache[path].exports;
+    if (has.call(modules, path)) return initModule(path, modules[path]);
+
+    throw new Error("Cannot find module '" + name + "' from '" + loaderPath + "'");
+  };
+
+  require.alias = function(from, to) {
+    aliases[to] = from;
+  };
+
+  var extRe = /\.[^.\/]+$/;
+  var indexRe = /\/index(\.[^\/]+)?$/;
+  var addExtensions = function(bundle) {
+    if (extRe.test(bundle)) {
+      var alias = bundle.replace(extRe, '');
+      if (!has.call(aliases, alias) || aliases[alias].replace(extRe, '') === alias + '/index') {
+        aliases[alias] = bundle;
+      }
+    }
+
+    if (indexRe.test(bundle)) {
+      var iAlias = bundle.replace(indexRe, '');
+      if (!has.call(aliases, iAlias)) {
+        aliases[iAlias] = bundle;
+      }
+    }
+  };
+
+  require.register = require.define = function(bundle, fn) {
+    if (bundle && typeof bundle === 'object') {
+      for (var key in bundle) {
+        if (has.call(bundle, key)) {
+          require.register(key, bundle[key]);
+        }
+      }
+    } else {
+      modules[bundle] = fn;
+      delete cache[bundle];
+      addExtensions(bundle);
+    }
+  };
+
+  require.list = function() {
+    var list = [];
+    for (var item in modules) {
+      if (has.call(modules, item)) {
+        list.push(item);
+      }
+    }
+    return list;
+  };
+
+  var hmr = globals._hmr && new globals._hmr(_resolve, require, modules, cache);
+  require._cache = cache;
+  require.hmr = hmr && hmr.wrap;
+  require.brunch = true;
+  globals.require = require;
+})();
+
+(function() {
+var global = typeof window === 'undefined' ? this : window;
+var __makeRelativeRequire = function(require, mappings, pref) {
+  var none = {};
+  var tryReq = function(name, pref) {
+    var val;
+    try {
+      val = require(pref + '/node_modules/' + name);
+      return val;
+    } catch (e) {
+      if (e.toString().indexOf('Cannot find module') === -1) {
+        throw e;
+      }
+
+      if (pref.indexOf('node_modules') !== -1) {
+        var s = pref.split('/');
+        var i = s.lastIndexOf('node_modules');
+        var newPref = s.slice(0, i).join('/');
+        return tryReq(name, newPref);
+      }
+    }
+    return none;
+  };
+  return function(name) {
+    if (name in mappings) name = mappings[name];
+    if (!name) return;
+    if (name[0] !== '.' && pref) {
+      var val = tryReq(name, pref);
+      if (val !== none) return val;
+    }
+    return require(name);
+  }
+};
+
+require.register("mithril-stream/stream.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril-stream");
+  (function() {
+    /* eslint-disable */
+;(function() {
+"use strict"
+/* eslint-enable */
+Stream.SKIP = {}
+Stream.lift = lift
+Stream.scan = scan
+Stream.merge = merge
+Stream.combine = combine
+Stream.scanMerge = scanMerge
+Stream["fantasy-land/of"] = Stream
+
+var warnedHalt = false
+Object.defineProperty(Stream, "HALT", {
+	get: function() {
+		warnedHalt || console.log("HALT is deprecated and has been renamed to SKIP");
+		warnedHalt = true
+		return Stream.SKIP
+	}
+})
+
+function Stream(value) {
+	var dependentStreams = []
+	var dependentFns = []
+
+	function stream(v) {
+		if (arguments.length && v !== Stream.SKIP) {
+			value = v
+			if (open(stream)) {
+				stream.changing()
+				stream.state = "active"
+				dependentStreams.forEach(function(s, i) { s(dependentFns[i](value)) })
+			}
+		}
+
+		return value
+	}
+
+	stream.constructor = Stream
+	stream.state = arguments.length && value !== Stream.SKIP ? "active" : "pending"
+	stream.parents = []
+
+	stream.changing = function() {
+		open(stream) && (stream.state = "changing")
+		dependentStreams.forEach(function(s) {
+			s.changing()
+		})
+	}
+
+	stream.map = function(fn, ignoreInitial) {
+		var target = stream.state === "active" && ignoreInitial !== Stream.SKIP
+			? Stream(fn(value))
+			: Stream()
+		target.parents.push(stream)
+
+		dependentStreams.push(target)
+		dependentFns.push(fn)
+		return target
+	}
+
+	var end
+	function createEnd() {
+		end = Stream()
+		end.map(function(value) {
+			if (value === true) {
+				stream.parents.forEach(function (p) {p.unregisterChild(stream)})
+				stream.state = "ended"
+				stream.parents.length = dependentStreams.length = dependentFns.length = 0
+			}
+			return value
+		})
+		return end
+	}
+
+	stream.toJSON = function() { return value != null && typeof value.toJSON === "function" ? value.toJSON() : value }
+
+	stream["fantasy-land/map"] = stream.map
+	stream["fantasy-land/ap"] = function(x) { return combine(function(s1, s2) { return s1()(s2()) }, [x, stream]) }
+
+	stream.unregisterChild = function(child) {
+		var childIndex = dependentStreams.indexOf(child)
+		if (childIndex !== -1) {
+			dependentStreams.splice(childIndex, 1)
+			dependentFns.splice(childIndex, 1)
+		}
+	}
+
+	Object.defineProperty(stream, "end", {
+		get: function() { return end || createEnd() }
+	})
+
+	return stream
+}
+
+function combine(fn, streams) {
+	var ready = streams.every(function(s) {
+		if (s.constructor !== Stream)
+			throw new Error("Ensure that each item passed to stream.combine/stream.merge/lift is a stream")
+		return s.state === "active"
+	})
+	var stream = ready
+		? Stream(fn.apply(null, streams.concat([streams])))
+		: Stream()
+
+	var changed = []
+
+	var mappers = streams.map(function(s) {
+		return s.map(function(value) {
+			changed.push(s)
+			if (ready || streams.every(function(s) { return s.state !== "pending" })) {
+				ready = true
+				stream(fn.apply(null, streams.concat([changed])))
+				changed = []
+			}
+			return value
+		}, Stream.SKIP)
+	})
+
+	var endStream = stream.end.map(function(value) {
+		if (value === true) {
+			mappers.forEach(function(mapper) { mapper.end(true) })
+			endStream.end(true)
+		}
+		return undefined
+	})
+
+	return stream
+}
+
+function merge(streams) {
+	return combine(function() { return streams.map(function(s) { return s() }) }, streams)
+}
+
+function scan(fn, acc, origin) {
+	var stream = origin.map(function(v) {
+		var next = fn(acc, v)
+		if (next !== Stream.SKIP) acc = next
+		return next
+	})
+	stream(acc)
+	return stream
+}
+
+function scanMerge(tuples, seed) {
+	var streams = tuples.map(function(tuple) { return tuple[0] })
+
+	var stream = combine(function() {
+		var changed = arguments[arguments.length - 1]
+		streams.forEach(function(stream, i) {
+			if (changed.indexOf(stream) > -1)
+				seed = tuples[i][1](seed, stream())
+		})
+
+		return seed
+	}, streams)
+
+	stream(seed)
+
+	return stream
+}
+
+function lift() {
+	var fn = arguments[0]
+	var streams = Array.prototype.slice.call(arguments, 1)
+	return merge(streams).map(function(streams) {
+		return fn.apply(undefined, streams)
+	})
+}
+
+function open(s) {
+	return s.state === "pending" || s.state === "active" || s.state === "changing"
+}
+
+if (typeof module !== "undefined") module["exports"] = Stream
+else if (typeof window.m === "function" && !("stream" in window.m)) window.m.stream = Stream
+else window.m = {stream : Stream}
+
+}());
+  })();
+});
+
+require.register("mithril/api/mount-redraw.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var Vnode = require("../render/vnode")
+
+module.exports = function(render, schedule, console) {
+	var subscriptions = []
+	var rendering = false
+	var pending = false
+
+	function sync() {
+		if (rendering) throw new Error("Nested m.redraw.sync() call")
+		rendering = true
+		for (var i = 0; i < subscriptions.length; i += 2) {
+			try { render(subscriptions[i], Vnode(subscriptions[i + 1]), redraw) }
+			catch (e) { console.error(e) }
+		}
+		rendering = false
+	}
+
+	function redraw() {
+		if (!pending) {
+			pending = true
+			schedule(function() {
+				pending = false
+				sync()
+			})
+		}
+	}
+
+	redraw.sync = sync
+
+	function mount(root, component) {
+		if (component != null && component.view == null && typeof component !== "function") {
+			throw new TypeError("m.mount(element, component) expects a component, not a vnode")
+		}
+
+		var index = subscriptions.indexOf(root)
+		if (index >= 0) {
+			subscriptions.splice(index, 2)
+			render(root, [], redraw)
+		}
+
+		if (component != null) {
+			subscriptions.push(root, component)
+			render(root, Vnode(component), redraw)
+		}
+	}
+
+	return {mount: mount, redraw: redraw}
+}
+  })();
+});
+
+require.register("mithril/api/router.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var Vnode = require("../render/vnode")
+var m = require("../render/hyperscript")
+var Promise = require("../promise/promise")
+
+var buildPathname = require("../pathname/build")
+var parsePathname = require("../pathname/parse")
+var compileTemplate = require("../pathname/compileTemplate")
+var assign = require("../pathname/assign")
+
+var sentinel = {}
+
+module.exports = function($window, mountRedraw) {
+	var fireAsync
+
+	function setPath(path, data, options) {
+		path = buildPathname(path, data)
+		if (fireAsync != null) {
+			fireAsync()
+			var state = options ? options.state : null
+			var title = options ? options.title : null
+			if (options && options.replace) $window.history.replaceState(state, title, route.prefix + path)
+			else $window.history.pushState(state, title, route.prefix + path)
+		}
+		else {
+			$window.location.href = route.prefix + path
+		}
+	}
+
+	var currentResolver = sentinel, component, attrs, currentPath, lastUpdate
+
+	var SKIP = route.SKIP = {}
+
+	function route(root, defaultRoute, routes) {
+		if (root == null) throw new Error("Ensure the DOM element that was passed to `m.route` is not undefined")
+		// 0 = start
+		// 1 = init
+		// 2 = ready
+		var state = 0
+
+		var compiled = Object.keys(routes).map(function(route) {
+			if (route[0] !== "/") throw new SyntaxError("Routes must start with a `/`")
+			if ((/:([^\/\.-]+)(\.{3})?:/).test(route)) {
+				throw new SyntaxError("Route parameter names must be separated with either `/`, `.`, or `-`")
+			}
+			return {
+				route: route,
+				component: routes[route],
+				check: compileTemplate(route),
+			}
+		})
+		var callAsync = typeof setImmediate === "function" ? setImmediate : setTimeout
+		var p = Promise.resolve()
+		var scheduled = false
+		var onremove
+
+		fireAsync = null
+
+		if (defaultRoute != null) {
+			var defaultData = parsePathname(defaultRoute)
+
+			if (!compiled.some(function (i) { return i.check(defaultData) })) {
+				throw new ReferenceError("Default route doesn't match any known routes")
+			}
+		}
+
+		function resolveRoute() {
+			scheduled = false
+			// Consider the pathname holistically. The prefix might even be invalid,
+			// but that's not our problem.
+			var prefix = $window.location.hash
+			if (route.prefix[0] !== "#") {
+				prefix = $window.location.search + prefix
+				if (route.prefix[0] !== "?") {
+					prefix = $window.location.pathname + prefix
+					if (prefix[0] !== "/") prefix = "/" + prefix
+				}
+			}
+			// This seemingly useless `.concat()` speeds up the tests quite a bit,
+			// since the representation is consistently a relatively poorly
+			// optimized cons string.
+			var path = prefix.concat()
+				.replace(/(?:%[a-f89][a-f0-9])+/gim, decodeURIComponent)
+				.slice(route.prefix.length)
+			var data = parsePathname(path)
+
+			assign(data.params, $window.history.state)
+
+			function fail() {
+				if (path === defaultRoute) throw new Error("Could not resolve default route " + defaultRoute)
+				setPath(defaultRoute, null, {replace: true})
+			}
+
+			loop(0)
+			function loop(i) {
+				// 0 = init
+				// 1 = scheduled
+				// 2 = done
+				for (; i < compiled.length; i++) {
+					if (compiled[i].check(data)) {
+						var payload = compiled[i].component
+						var matchedRoute = compiled[i].route
+						var localComp = payload
+						var update = lastUpdate = function(comp) {
+							if (update !== lastUpdate) return
+							if (comp === SKIP) return loop(i + 1)
+							component = comp != null && (typeof comp.view === "function" || typeof comp === "function")? comp : "div"
+							attrs = data.params, currentPath = path, lastUpdate = null
+							currentResolver = payload.render ? payload : null
+							if (state === 2) mountRedraw.redraw()
+							else {
+								state = 2
+								mountRedraw.redraw.sync()
+							}
+						}
+						// There's no understating how much I *wish* I could
+						// use `async`/`await` here...
+						if (payload.view || typeof payload === "function") {
+							payload = {}
+							update(localComp)
+						}
+						else if (payload.onmatch) {
+							p.then(function () {
+								return payload.onmatch(data.params, path, matchedRoute)
+							}).then(update, fail)
+						}
+						else update("div")
+						return
+					}
+				}
+				fail()
+			}
+		}
+
+		// Set it unconditionally so `m.route.set` and `m.route.Link` both work,
+		// even if neither `pushState` nor `hashchange` are supported. It's
+		// cleared if `hashchange` is used, since that makes it automatically
+		// async.
+		fireAsync = function() {
+			if (!scheduled) {
+				scheduled = true
+				callAsync(resolveRoute)
+			}
+		}
+
+		if (typeof $window.history.pushState === "function") {
+			onremove = function() {
+				$window.removeEventListener("popstate", fireAsync, false)
+			}
+			$window.addEventListener("popstate", fireAsync, false)
+		} else if (route.prefix[0] === "#") {
+			fireAsync = null
+			onremove = function() {
+				$window.removeEventListener("hashchange", resolveRoute, false)
+			}
+			$window.addEventListener("hashchange", resolveRoute, false)
+		}
+
+		return mountRedraw.mount(root, {
+			onbeforeupdate: function() {
+				state = state ? 2 : 1
+				return !(!state || sentinel === currentResolver)
+			},
+			oncreate: resolveRoute,
+			onremove: onremove,
+			view: function() {
+				if (!state || sentinel === currentResolver) return
+				// Wrap in a fragment to preserve existing key semantics
+				var vnode = [Vnode(component, attrs.key, attrs)]
+				if (currentResolver) vnode = currentResolver.render(vnode[0])
+				return vnode
+			},
+		})
+	}
+	route.set = function(path, data, options) {
+		if (lastUpdate != null) {
+			options = options || {}
+			options.replace = true
+		}
+		lastUpdate = null
+		setPath(path, data, options)
+	}
+	route.get = function() {return currentPath}
+	route.prefix = "#!"
+	route.Link = {
+		view: function(vnode) {
+			var options = vnode.attrs.options
+			// Remove these so they don't get overwritten
+			var attrs = {}, onclick, href
+			assign(attrs, vnode.attrs)
+			// The first two are internal, but the rest are magic attributes
+			// that need censored to not screw up rendering.
+			attrs.selector = attrs.options = attrs.key = attrs.oninit =
+			attrs.oncreate = attrs.onbeforeupdate = attrs.onupdate =
+			attrs.onbeforeremove = attrs.onremove = null
+
+			// Do this now so we can get the most current `href` and `disabled`.
+			// Those attributes may also be specified in the selector, and we
+			// should honor that.
+			var child = m(vnode.attrs.selector || "a", attrs, vnode.children)
+
+			// Let's provide a *right* way to disable a route link, rather than
+			// letting people screw up accessibility on accident.
+			//
+			// The attribute is coerced so users don't get surprised over
+			// `disabled: 0` resulting in a button that's somehow routable
+			// despite being visibly disabled.
+			if (child.attrs.disabled = Boolean(child.attrs.disabled)) {
+				child.attrs.href = null
+				child.attrs["aria-disabled"] = "true"
+				// If you *really* do want to do this on a disabled link, use
+				// an `oncreate` hook to add it.
+				child.attrs.onclick = null
+			} else {
+				onclick = child.attrs.onclick
+				href = child.attrs.href
+				child.attrs.href = route.prefix + href
+				child.attrs.onclick = function(e) {
+					var result
+					if (typeof onclick === "function") {
+						result = onclick.call(e.currentTarget, e)
+					} else if (onclick == null || typeof onclick !== "object") {
+						// do nothing
+					} else if (typeof onclick.handleEvent === "function") {
+						onclick.handleEvent(e)
+					}
+
+					// Adapted from React Router's implementation:
+					// https://github.com/ReactTraining/react-router/blob/520a0acd48ae1b066eb0b07d6d4d1790a1d02482/packages/react-router-dom/modules/Link.js
+					//
+					// Try to be flexible and intuitive in how we handle links.
+					// Fun fact: links aren't as obvious to get right as you
+					// would expect. There's a lot more valid ways to click a
+					// link than this, and one might want to not simply click a
+					// link, but right click or command-click it to copy the
+					// link target, etc. Nope, this isn't just for blind people.
+					if (
+						// Skip if `onclick` prevented default
+						result !== false && !e.defaultPrevented &&
+						// Ignore everything but left clicks
+						(e.button === 0 || e.which === 0 || e.which === 1) &&
+						// Let the browser handle `target=_blank`, etc.
+						(!e.currentTarget.target || e.currentTarget.target === "_self") &&
+						// No modifier keys
+						!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey
+					) {
+						e.preventDefault()
+						e.redraw = false
+						route.set(href, null, options)
+					}
+				}
+			}
+			return child
+		},
+	}
+	route.param = function(key) {
+		return attrs && key != null ? attrs[key] : attrs
+	}
+
+	return route
+}
+  })();
+});
+
+require.register("mithril/hyperscript.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var hyperscript = require("./render/hyperscript")
+
+hyperscript.trust = require("./render/trust")
+hyperscript.fragment = require("./render/fragment")
+
+module.exports = hyperscript
+  })();
+});
+
+require.register("mithril/index.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var hyperscript = require("./hyperscript")
+var request = require("./request")
+var mountRedraw = require("./mount-redraw")
+
+var m = function m() { return hyperscript.apply(this, arguments) }
+m.m = hyperscript
+m.trust = hyperscript.trust
+m.fragment = hyperscript.fragment
+m.mount = mountRedraw.mount
+m.route = require("./route")
+m.render = require("./render")
+m.redraw = mountRedraw.redraw
+m.request = request.request
+m.jsonp = request.jsonp
+m.parseQueryString = require("./querystring/parse")
+m.buildQueryString = require("./querystring/build")
+m.parsePathname = require("./pathname/parse")
+m.buildPathname = require("./pathname/build")
+m.vnode = require("./render/vnode")
+m.PromisePolyfill = require("./promise/polyfill")
+
+module.exports = m
+  })();
+});
+
+require.register("mithril/mount-redraw.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var render = require("./render")
+
+module.exports = require("./api/mount-redraw")(render, requestAnimationFrame, console)
+  })();
+});
+
+require.register("mithril/pathname/assign.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+module.exports = Object.assign || function(target, source) {
+	if(source) Object.keys(source).forEach(function(key) { target[key] = source[key] })
+}
+  })();
+});
+
+require.register("mithril/pathname/build.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var buildQueryString = require("../querystring/build")
+var assign = require("./assign")
+
+// Returns `path` from `template` + `params`
+module.exports = function(template, params) {
+	if ((/:([^\/\.-]+)(\.{3})?:/).test(template)) {
+		throw new SyntaxError("Template parameter names *must* be separated")
+	}
+	if (params == null) return template
+	var queryIndex = template.indexOf("?")
+	var hashIndex = template.indexOf("#")
+	var queryEnd = hashIndex < 0 ? template.length : hashIndex
+	var pathEnd = queryIndex < 0 ? queryEnd : queryIndex
+	var path = template.slice(0, pathEnd)
+	var query = {}
+
+	assign(query, params)
+
+	var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m, key, variadic) {
+		delete query[key]
+		// If no such parameter exists, don't interpolate it.
+		if (params[key] == null) return m
+		// Escape normal parameters, but not variadic ones.
+		return variadic ? params[key] : encodeURIComponent(String(params[key]))
+	})
+
+	// In case the template substitution adds new query/hash parameters.
+	var newQueryIndex = resolved.indexOf("?")
+	var newHashIndex = resolved.indexOf("#")
+	var newQueryEnd = newHashIndex < 0 ? resolved.length : newHashIndex
+	var newPathEnd = newQueryIndex < 0 ? newQueryEnd : newQueryIndex
+	var result = resolved.slice(0, newPathEnd)
+
+	if (queryIndex >= 0) result += template.slice(queryIndex, queryEnd)
+	if (newQueryIndex >= 0) result += (queryIndex < 0 ? "?" : "&") + resolved.slice(newQueryIndex, newQueryEnd)
+	var querystring = buildQueryString(query)
+	if (querystring) result += (queryIndex < 0 && newQueryIndex < 0 ? "?" : "&") + querystring
+	if (hashIndex >= 0) result += template.slice(hashIndex)
+	if (newHashIndex >= 0) result += (hashIndex < 0 ? "" : "&") + resolved.slice(newHashIndex)
+	return result
+}
+  })();
+});
+
+require.register("mithril/pathname/compileTemplate.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var parsePathname = require("./parse")
+
+// Compiles a template into a function that takes a resolved path (without query
+// strings) and returns an object containing the template parameters with their
+// parsed values. This expects the input of the compiled template to be the
+// output of `parsePathname`. Note that it does *not* remove query parameters
+// specified in the template.
+module.exports = function(template) {
+	var templateData = parsePathname(template)
+	var templateKeys = Object.keys(templateData.params)
+	var keys = []
+	var regexp = new RegExp("^" + templateData.path.replace(
+		// I escape literal text so people can use things like `:file.:ext` or
+		// `:lang-:locale` in routes. This is all merged into one pass so I
+		// don't also accidentally escape `-` and make it harder to detect it to
+		// ban it from template parameters.
+		/:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
+		function(m, key, extra) {
+			if (key == null) return "\\" + m
+			keys.push({k: key, r: extra === "..."})
+			if (extra === "...") return "(.*)"
+			if (extra === ".") return "([^/]+)\\."
+			return "([^/]+)" + (extra || "")
+		}
+	) + "$")
+	return function(data) {
+		// First, check the params. Usually, there isn't any, and it's just
+		// checking a static set.
+		for (var i = 0; i < templateKeys.length; i++) {
+			if (templateData.params[templateKeys[i]] !== data.params[templateKeys[i]]) return false
+		}
+		// If no interpolations exist, let's skip all the ceremony
+		if (!keys.length) return regexp.test(data.path)
+		var values = regexp.exec(data.path)
+		if (values == null) return false
+		for (var i = 0; i < keys.length; i++) {
+			data.params[keys[i].k] = keys[i].r ? values[i + 1] : decodeURIComponent(values[i + 1])
+		}
+		return true
+	}
+}
+  })();
+});
+
+require.register("mithril/pathname/parse.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var parseQueryString = require("../querystring/parse")
+
+// Returns `{path, params}` from `url`
+module.exports = function(url) {
+	var queryIndex = url.indexOf("?")
+	var hashIndex = url.indexOf("#")
+	var queryEnd = hashIndex < 0 ? url.length : hashIndex
+	var pathEnd = queryIndex < 0 ? queryEnd : queryIndex
+	var path = url.slice(0, pathEnd).replace(/\/{2,}/g, "/")
+
+	if (!path) path = "/"
+	else {
+		if (path[0] !== "/") path = "/" + path
+		if (path.length > 1 && path[path.length - 1] === "/") path = path.slice(0, -1)
+	}
+	return {
+		path: path,
+		params: queryIndex < 0
+			? {}
+			: parseQueryString(url.slice(queryIndex + 1, queryEnd)),
+	}
+}
+  })();
+});
+
+require.register("mithril/promise/polyfill.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+/** @constructor */
+var PromisePolyfill = function(executor) {
+	if (!(this instanceof PromisePolyfill)) throw new Error("Promise must be called with `new`")
+	if (typeof executor !== "function") throw new TypeError("executor must be a function")
+
+	var self = this, resolvers = [], rejectors = [], resolveCurrent = handler(resolvers, true), rejectCurrent = handler(rejectors, false)
+	var instance = self._instance = {resolvers: resolvers, rejectors: rejectors}
+	var callAsync = typeof setImmediate === "function" ? setImmediate : setTimeout
+	function handler(list, shouldAbsorb) {
+		return function execute(value) {
+			var then
+			try {
+				if (shouldAbsorb && value != null && (typeof value === "object" || typeof value === "function") && typeof (then = value.then) === "function") {
+					if (value === self) throw new TypeError("Promise can't be resolved w/ itself")
+					executeOnce(then.bind(value))
+				}
+				else {
+					callAsync(function() {
+						if (!shouldAbsorb && list.length === 0) console.error("Possible unhandled promise rejection:", value)
+						for (var i = 0; i < list.length; i++) list[i](value)
+						resolvers.length = 0, rejectors.length = 0
+						instance.state = shouldAbsorb
+						instance.retry = function() {execute(value)}
+					})
+				}
+			}
+			catch (e) {
+				rejectCurrent(e)
+			}
+		}
+	}
+	function executeOnce(then) {
+		var runs = 0
+		function run(fn) {
+			return function(value) {
+				if (runs++ > 0) return
+				fn(value)
+			}
+		}
+		var onerror = run(rejectCurrent)
+		try {then(run(resolveCurrent), onerror)} catch (e) {onerror(e)}
+	}
+
+	executeOnce(executor)
+}
+PromisePolyfill.prototype.then = function(onFulfilled, onRejection) {
+	var self = this, instance = self._instance
+	function handle(callback, list, next, state) {
+		list.push(function(value) {
+			if (typeof callback !== "function") next(value)
+			else try {resolveNext(callback(value))} catch (e) {if (rejectNext) rejectNext(e)}
+		})
+		if (typeof instance.retry === "function" && state === instance.state) instance.retry()
+	}
+	var resolveNext, rejectNext
+	var promise = new PromisePolyfill(function(resolve, reject) {resolveNext = resolve, rejectNext = reject})
+	handle(onFulfilled, instance.resolvers, resolveNext, true), handle(onRejection, instance.rejectors, rejectNext, false)
+	return promise
+}
+PromisePolyfill.prototype.catch = function(onRejection) {
+	return this.then(null, onRejection)
+}
+PromisePolyfill.prototype.finally = function(callback) {
+	return this.then(
+		function(value) {
+			return PromisePolyfill.resolve(callback()).then(function() {
+				return value
+			})
+		},
+		function(reason) {
+			return PromisePolyfill.resolve(callback()).then(function() {
+				return PromisePolyfill.reject(reason);
+			})
+		}
+	)
+}
+PromisePolyfill.resolve = function(value) {
+	if (value instanceof PromisePolyfill) return value
+	return new PromisePolyfill(function(resolve) {resolve(value)})
+}
+PromisePolyfill.reject = function(value) {
+	return new PromisePolyfill(function(resolve, reject) {reject(value)})
+}
+PromisePolyfill.all = function(list) {
+	return new PromisePolyfill(function(resolve, reject) {
+		var total = list.length, count = 0, values = []
+		if (list.length === 0) resolve([])
+		else for (var i = 0; i < list.length; i++) {
+			(function(i) {
+				function consume(value) {
+					count++
+					values[i] = value
+					if (count === total) resolve(values)
+				}
+				if (list[i] != null && (typeof list[i] === "object" || typeof list[i] === "function") && typeof list[i].then === "function") {
+					list[i].then(consume, reject)
+				}
+				else consume(list[i])
+			})(i)
+		}
+	})
+}
+PromisePolyfill.race = function(list) {
+	return new PromisePolyfill(function(resolve, reject) {
+		for (var i = 0; i < list.length; i++) {
+			list[i].then(resolve, reject)
+		}
+	})
+}
+
+module.exports = PromisePolyfill
+  })();
+});
+
+require.register("mithril/promise/promise.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var PromisePolyfill = require("./polyfill")
+
+if (typeof window !== "undefined") {
+	if (typeof window.Promise === "undefined") {
+		window.Promise = PromisePolyfill
+	} else if (!window.Promise.prototype.finally) {
+		window.Promise.prototype.finally = PromisePolyfill.prototype.finally
+	}
+	module.exports = window.Promise
+} else if (typeof global !== "undefined") {
+	if (typeof global.Promise === "undefined") {
+		global.Promise = PromisePolyfill
+	} else if (!global.Promise.prototype.finally) {
+		global.Promise.prototype.finally = PromisePolyfill.prototype.finally
+	}
+	module.exports = global.Promise
+} else {
+	module.exports = PromisePolyfill
+}
+  })();
+});
+
+require.register("mithril/querystring/build.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+module.exports = function(object) {
+	if (Object.prototype.toString.call(object) !== "[object Object]") return ""
+
+	var args = []
+	for (var key in object) {
+		destructure(key, object[key])
+	}
+
+	return args.join("&")
+
+	function destructure(key, value) {
+		if (Array.isArray(value)) {
+			for (var i = 0; i < value.length; i++) {
+				destructure(key + "[" + i + "]", value[i])
+			}
+		}
+		else if (Object.prototype.toString.call(value) === "[object Object]") {
+			for (var i in value) {
+				destructure(key + "[" + i + "]", value[i])
+			}
+		}
+		else args.push(encodeURIComponent(key) + (value != null && value !== "" ? "=" + encodeURIComponent(value) : ""))
+	}
+}
+  })();
+});
+
+require.register("mithril/querystring/parse.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+module.exports = function(string) {
+	if (string === "" || string == null) return {}
+	if (string.charAt(0) === "?") string = string.slice(1)
+
+	var entries = string.split("&"), counters = {}, data = {}
+	for (var i = 0; i < entries.length; i++) {
+		var entry = entries[i].split("=")
+		var key = decodeURIComponent(entry[0])
+		var value = entry.length === 2 ? decodeURIComponent(entry[1]) : ""
+
+		if (value === "true") value = true
+		else if (value === "false") value = false
+
+		var levels = key.split(/\]\[?|\[/)
+		var cursor = data
+		if (key.indexOf("[") > -1) levels.pop()
+		for (var j = 0; j < levels.length; j++) {
+			var level = levels[j], nextLevel = levels[j + 1]
+			var isNumber = nextLevel == "" || !isNaN(parseInt(nextLevel, 10))
+			if (level === "") {
+				var key = levels.slice(0, j).join()
+				if (counters[key] == null) {
+					counters[key] = Array.isArray(cursor) ? cursor.length : 0
+				}
+				level = counters[key]++
+			}
+			// Disallow direct prototype pollution
+			else if (level === "__proto__") break
+			if (j === levels.length - 1) cursor[level] = value
+			else {
+				// Read own properties exclusively to disallow indirect
+				// prototype pollution
+				var desc = Object.getOwnPropertyDescriptor(cursor, level)
+				if (desc != null) desc = desc.value
+				if (desc == null) cursor[level] = desc = isNumber ? [] : {}
+				cursor = desc
+			}
+		}
+	}
+	return data
+}
+  })();
+});
+
+require.register("mithril/render.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+module.exports = require("./render/render")(window)
+  })();
+});
+
+require.register("mithril/render/fragment.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var Vnode = require("../render/vnode")
+var hyperscriptVnode = require("./hyperscriptVnode")
+
+module.exports = function() {
+	var vnode = hyperscriptVnode.apply(0, arguments)
+
+	vnode.tag = "["
+	vnode.children = Vnode.normalizeChildren(vnode.children)
+	return vnode
+}
+  })();
+});
+
+require.register("mithril/render/hyperscript.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var Vnode = require("../render/vnode")
+var hyperscriptVnode = require("./hyperscriptVnode")
+
+var selectorParser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g
+var selectorCache = {}
+var hasOwn = {}.hasOwnProperty
+
+function isEmpty(object) {
+	for (var key in object) if (hasOwn.call(object, key)) return false
+	return true
+}
+
+function compileSelector(selector) {
+	var match, tag = "div", classes = [], attrs = {}
+	while (match = selectorParser.exec(selector)) {
+		var type = match[1], value = match[2]
+		if (type === "" && value !== "") tag = value
+		else if (type === "#") attrs.id = value
+		else if (type === ".") classes.push(value)
+		else if (match[3][0] === "[") {
+			var attrValue = match[6]
+			if (attrValue) attrValue = attrValue.replace(/\\(["'])/g, "$1").replace(/\\\\/g, "\\")
+			if (match[4] === "class") classes.push(attrValue)
+			else attrs[match[4]] = attrValue === "" ? attrValue : attrValue || true
+		}
+	}
+	if (classes.length > 0) attrs.className = classes.join(" ")
+	return selectorCache[selector] = {tag: tag, attrs: attrs}
+}
+
+function execSelector(state, vnode) {
+	var attrs = vnode.attrs
+	var children = Vnode.normalizeChildren(vnode.children)
+	var hasClass = hasOwn.call(attrs, "class")
+	var className = hasClass ? attrs.class : attrs.className
+
+	vnode.tag = state.tag
+	vnode.attrs = null
+	vnode.children = undefined
+
+	if (!isEmpty(state.attrs) && !isEmpty(attrs)) {
+		var newAttrs = {}
+
+		for (var key in attrs) {
+			if (hasOwn.call(attrs, key)) newAttrs[key] = attrs[key]
+		}
+
+		attrs = newAttrs
+	}
+
+	for (var key in state.attrs) {
+		if (hasOwn.call(state.attrs, key) && key !== "className" && !hasOwn.call(attrs, key)){
+			attrs[key] = state.attrs[key]
+		}
+	}
+	if (className != null || state.attrs.className != null) attrs.className =
+		className != null
+			? state.attrs.className != null
+				? String(state.attrs.className) + " " + String(className)
+				: className
+			: state.attrs.className != null
+				? state.attrs.className
+				: null
+
+	if (hasClass) attrs.class = null
+
+	for (var key in attrs) {
+		if (hasOwn.call(attrs, key) && key !== "key") {
+			vnode.attrs = attrs
+			break
+		}
+	}
+
+	if (Array.isArray(children) && children.length === 1 && children[0] != null && children[0].tag === "#") {
+		vnode.text = children[0].children
+	} else {
+		vnode.children = children
+	}
+
+	return vnode
+}
+
+function hyperscript(selector) {
+	if (selector == null || typeof selector !== "string" && typeof selector !== "function" && typeof selector.view !== "function") {
+		throw Error("The selector must be either a string or a component.");
+	}
+
+	var vnode = hyperscriptVnode.apply(1, arguments)
+
+	if (typeof selector === "string") {
+		vnode.children = Vnode.normalizeChildren(vnode.children)
+		if (selector !== "[") return execSelector(selectorCache[selector] || compileSelector(selector), vnode)
+	}
+
+	vnode.tag = selector
+	return vnode
+}
+
+module.exports = hyperscript
+  })();
+});
+
+require.register("mithril/render/hyperscriptVnode.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var Vnode = require("../render/vnode")
+
+// Call via `hyperscriptVnode.apply(startOffset, arguments)`
+//
+// The reason I do it this way, forwarding the arguments and passing the start
+// offset in `this`, is so I don't have to create a temporary array in a
+// performance-critical path.
+//
+// In native ES6, I'd instead add a final `...args` parameter to the
+// `hyperscript` and `fragment` factories and define this as
+// `hyperscriptVnode(...args)`, since modern engines do optimize that away. But
+// ES5 (what Mithril requires thanks to IE support) doesn't give me that luxury,
+// and engines aren't nearly intelligent enough to do either of these:
+//
+// 1. Elide the allocation for `[].slice.call(arguments, 1)` when it's passed to
+//    another function only to be indexed.
+// 2. Elide an `arguments` allocation when it's passed to any function other
+//    than `Function.prototype.apply` or `Reflect.apply`.
+//
+// In ES6, it'd probably look closer to this (I'd need to profile it, though):
+// module.exports = function(attrs, ...children) {
+//     if (attrs == null || typeof attrs === "object" && attrs.tag == null && !Array.isArray(attrs)) {
+//         if (children.length === 1 && Array.isArray(children[0])) children = children[0]
+//     } else {
+//         children = children.length === 0 && Array.isArray(attrs) ? attrs : [attrs, ...children]
+//         attrs = undefined
+//     }
+//
+//     if (attrs == null) attrs = {}
+//     return Vnode("", attrs.key, attrs, children)
+// }
+module.exports = function() {
+	var attrs = arguments[this], start = this + 1, children
+
+	if (attrs == null) {
+		attrs = {}
+	} else if (typeof attrs !== "object" || attrs.tag != null || Array.isArray(attrs)) {
+		attrs = {}
+		start = this
+	}
+
+	if (arguments.length === start + 1) {
+		children = arguments[start]
+		if (!Array.isArray(children)) children = [children]
+	} else {
+		children = []
+		while (start < arguments.length) children.push(arguments[start++])
+	}
+
+	return Vnode("", attrs.key, attrs, children)
+}
+  })();
+});
+
+require.register("mithril/render/render.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var Vnode = require("../render/vnode")
+
+module.exports = function($window) {
+	var $doc = $window && $window.document
+	var currentRedraw
+
+	var nameSpace = {
+		svg: "http://www.w3.org/2000/svg",
+		math: "http://www.w3.org/1998/Math/MathML"
+	}
+
+	function getNameSpace(vnode) {
+		return vnode.attrs && vnode.attrs.xmlns || nameSpace[vnode.tag]
+	}
+
+	//sanity check to discourage people from doing `vnode.state = ...`
+	function checkState(vnode, original) {
+		if (vnode.state !== original) throw new Error("`vnode.state` must not be modified")
+	}
+
+	//Note: the hook is passed as the `this` argument to allow proxying the
+	//arguments without requiring a full array allocation to do so. It also
+	//takes advantage of the fact the current `vnode` is the first argument in
+	//all lifecycle methods.
+	function callHook(vnode) {
+		var original = vnode.state
+		try {
+			return this.apply(original, arguments)
+		} finally {
+			checkState(vnode, original)
+		}
+	}
+
+	// IE11 (at least) throws an UnspecifiedError when accessing document.activeElement when
+	// inside an iframe. Catch and swallow this error, and heavy-handidly return null.
+	function activeElement() {
+		try {
+			return $doc.activeElement
+		} catch (e) {
+			return null
+		}
+	}
+	//create
+	function createNodes(parent, vnodes, start, end, hooks, nextSibling, ns) {
+		for (var i = start; i < end; i++) {
+			var vnode = vnodes[i]
+			if (vnode != null) {
+				createNode(parent, vnode, hooks, ns, nextSibling)
+			}
+		}
+	}
+	function createNode(parent, vnode, hooks, ns, nextSibling) {
+		var tag = vnode.tag
+		if (typeof tag === "string") {
+			vnode.state = {}
+			if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks)
+			switch (tag) {
+				case "#": createText(parent, vnode, nextSibling); break
+				case "<": createHTML(parent, vnode, ns, nextSibling); break
+				case "[": createFragment(parent, vnode, hooks, ns, nextSibling); break
+				default: createElement(parent, vnode, hooks, ns, nextSibling)
+			}
+		}
+		else createComponent(parent, vnode, hooks, ns, nextSibling)
+	}
+	function createText(parent, vnode, nextSibling) {
+		vnode.dom = $doc.createTextNode(vnode.children)
+		insertNode(parent, vnode.dom, nextSibling)
+	}
+	var possibleParents = {caption: "table", thead: "table", tbody: "table", tfoot: "table", tr: "tbody", th: "tr", td: "tr", colgroup: "table", col: "colgroup"}
+	function createHTML(parent, vnode, ns, nextSibling) {
+		var match = vnode.children.match(/^\s*?<(\w+)/im) || []
+		// not using the proper parent makes the child element(s) vanish.
+		//     var div = document.createElement("div")
+		//     div.innerHTML = "<td>i</td><td>j</td>"
+		//     console.log(div.innerHTML)
+		// --> "ij", no <td> in sight.
+		var temp = $doc.createElement(possibleParents[match[1]] || "div")
+		if (ns === "http://www.w3.org/2000/svg") {
+			temp.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\">" + vnode.children + "</svg>"
+			temp = temp.firstChild
+		} else {
+			temp.innerHTML = vnode.children
+		}
+		vnode.dom = temp.firstChild
+		vnode.domSize = temp.childNodes.length
+		// Capture nodes to remove, so we don't confuse them.
+		vnode.instance = []
+		var fragment = $doc.createDocumentFragment()
+		var child
+		while (child = temp.firstChild) {
+			vnode.instance.push(child)
+			fragment.appendChild(child)
+		}
+		insertNode(parent, fragment, nextSibling)
+	}
+	function createFragment(parent, vnode, hooks, ns, nextSibling) {
+		var fragment = $doc.createDocumentFragment()
+		if (vnode.children != null) {
+			var children = vnode.children
+			createNodes(fragment, children, 0, children.length, hooks, null, ns)
+		}
+		vnode.dom = fragment.firstChild
+		vnode.domSize = fragment.childNodes.length
+		insertNode(parent, fragment, nextSibling)
+	}
+	function createElement(parent, vnode, hooks, ns, nextSibling) {
+		var tag = vnode.tag
+		var attrs = vnode.attrs
+		var is = attrs && attrs.is
+
+		ns = getNameSpace(vnode) || ns
+
+		var element = ns ?
+			is ? $doc.createElementNS(ns, tag, {is: is}) : $doc.createElementNS(ns, tag) :
+			is ? $doc.createElement(tag, {is: is}) : $doc.createElement(tag)
+		vnode.dom = element
+
+		if (attrs != null) {
+			setAttrs(vnode, attrs, ns)
+		}
+
+		insertNode(parent, element, nextSibling)
+
+		if (!maybeSetContentEditable(vnode)) {
+			if (vnode.text != null) {
+				if (vnode.text !== "") element.textContent = vnode.text
+				else vnode.children = [Vnode("#", undefined, undefined, vnode.text, undefined, undefined)]
+			}
+			if (vnode.children != null) {
+				var children = vnode.children
+				createNodes(element, children, 0, children.length, hooks, null, ns)
+				if (vnode.tag === "select" && attrs != null) setLateSelectAttrs(vnode, attrs)
+			}
+		}
+	}
+	function initComponent(vnode, hooks) {
+		var sentinel
+		if (typeof vnode.tag.view === "function") {
+			vnode.state = Object.create(vnode.tag)
+			sentinel = vnode.state.view
+			if (sentinel.$$reentrantLock$$ != null) return
+			sentinel.$$reentrantLock$$ = true
+		} else {
+			vnode.state = void 0
+			sentinel = vnode.tag
+			if (sentinel.$$reentrantLock$$ != null) return
+			sentinel.$$reentrantLock$$ = true
+			vnode.state = (vnode.tag.prototype != null && typeof vnode.tag.prototype.view === "function") ? new vnode.tag(vnode) : vnode.tag(vnode)
+		}
+		initLifecycle(vnode.state, vnode, hooks)
+		if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks)
+		vnode.instance = Vnode.normalize(callHook.call(vnode.state.view, vnode))
+		if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument")
+		sentinel.$$reentrantLock$$ = null
+	}
+	function createComponent(parent, vnode, hooks, ns, nextSibling) {
+		initComponent(vnode, hooks)
+		if (vnode.instance != null) {
+			createNode(parent, vnode.instance, hooks, ns, nextSibling)
+			vnode.dom = vnode.instance.dom
+			vnode.domSize = vnode.dom != null ? vnode.instance.domSize : 0
+		}
+		else {
+			vnode.domSize = 0
+		}
+	}
+
+	//update
+	/**
+	 * @param {Element|Fragment} parent - the parent element
+	 * @param {Vnode[] | null} old - the list of vnodes of the last `render()` call for
+	 *                               this part of the tree
+	 * @param {Vnode[] | null} vnodes - as above, but for the current `render()` call.
+	 * @param {Function[]} hooks - an accumulator of post-render hooks (oncreate/onupdate)
+	 * @param {Element | null} nextSibling - the next DOM node if we're dealing with a
+	 *                                       fragment that is not the last item in its
+	 *                                       parent
+	 * @param {'svg' | 'math' | String | null} ns) - the current XML namespace, if any
+	 * @returns void
+	 */
+	// This function diffs and patches lists of vnodes, both keyed and unkeyed.
+	//
+	// We will:
+	//
+	// 1. describe its general structure
+	// 2. focus on the diff algorithm optimizations
+	// 3. discuss DOM node operations.
+
+	// ## Overview:
+	//
+	// The updateNodes() function:
+	// - deals with trivial cases
+	// - determines whether the lists are keyed or unkeyed based on the first non-null node
+	//   of each list.
+	// - diffs them and patches the DOM if needed (that's the brunt of the code)
+	// - manages the leftovers: after diffing, are there:
+	//   - old nodes left to remove?
+	// 	 - new nodes to insert?
+	// 	 deal with them!
+	//
+	// The lists are only iterated over once, with an exception for the nodes in `old` that
+	// are visited in the fourth part of the diff and in the `removeNodes` loop.
+
+	// ## Diffing
+	//
+	// Reading https://github.com/localvoid/ivi/blob/ddc09d06abaef45248e6133f7040d00d3c6be853/packages/ivi/src/vdom/implementation.ts#L617-L837
+	// may be good for context on longest increasing subsequence-based logic for moving nodes.
+	//
+	// In order to diff keyed lists, one has to
+	//
+	// 1) match nodes in both lists, per key, and update them accordingly
+	// 2) create the nodes present in the new list, but absent in the old one
+	// 3) remove the nodes present in the old list, but absent in the new one
+	// 4) figure out what nodes in 1) to move in order to minimize the DOM operations.
+	//
+	// To achieve 1) one can create a dictionary of keys => index (for the old list), then iterate
+	// over the new list and for each new vnode, find the corresponding vnode in the old list using
+	// the map.
+	// 2) is achieved in the same step: if a new node has no corresponding entry in the map, it is new
+	// and must be created.
+	// For the removals, we actually remove the nodes that have been updated from the old list.
+	// The nodes that remain in that list after 1) and 2) have been performed can be safely removed.
+	// The fourth step is a bit more complex and relies on the longest increasing subsequence (LIS)
+	// algorithm.
+	//
+	// the longest increasing subsequence is the list of nodes that can remain in place. Imagine going
+	// from `1,2,3,4,5` to `4,5,1,2,3` where the numbers are not necessarily the keys, but the indices
+	// corresponding to the keyed nodes in the old list (keyed nodes `e,d,c,b,a` => `b,a,e,d,c` would
+	//  match the above lists, for example).
+	//
+	// In there are two increasing subsequences: `4,5` and `1,2,3`, the latter being the longest. We
+	// can update those nodes without moving them, and only call `insertNode` on `4` and `5`.
+	//
+	// @localvoid adapted the algo to also support node deletions and insertions (the `lis` is actually
+	// the longest increasing subsequence *of old nodes still present in the new list*).
+	//
+	// It is a general algorithm that is fireproof in all circumstances, but it requires the allocation
+	// and the construction of a `key => oldIndex` map, and three arrays (one with `newIndex => oldIndex`,
+	// the `LIS` and a temporary one to create the LIS).
+	//
+	// So we cheat where we can: if the tails of the lists are identical, they are guaranteed to be part of
+	// the LIS and can be updated without moving them.
+	//
+	// If two nodes are swapped, they are guaranteed not to be part of the LIS, and must be moved (with
+	// the exception of the last node if the list is fully reversed).
+	//
+	// ## Finding the next sibling.
+	//
+	// `updateNode()` and `createNode()` expect a nextSibling parameter to perform DOM operations.
+	// When the list is being traversed top-down, at any index, the DOM nodes up to the previous
+	// vnode reflect the content of the new list, whereas the rest of the DOM nodes reflect the old
+	// list. The next sibling must be looked for in the old list using `getNextSibling(... oldStart + 1 ...)`.
+	//
+	// In the other scenarios (swaps, upwards traversal, map-based diff),
+	// the new vnodes list is traversed upwards. The DOM nodes at the bottom of the list reflect the
+	// bottom part of the new vnodes list, and we can use the `v.dom`  value of the previous node
+	// as the next sibling (cached in the `nextSibling` variable).
+
+
+	// ## DOM node moves
+	//
+	// In most scenarios `updateNode()` and `createNode()` perform the DOM operations. However,
+	// this is not the case if the node moved (second and fourth part of the diff algo). We move
+	// the old DOM nodes before updateNode runs because it enables us to use the cached `nextSibling`
+	// variable rather than fetching it using `getNextSibling()`.
+	//
+	// The fourth part of the diff currently inserts nodes unconditionally, leading to issues
+	// like #1791 and #1999. We need to be smarter about those situations where adjascent old
+	// nodes remain together in the new list in a way that isn't covered by parts one and
+	// three of the diff algo.
+
+	function updateNodes(parent, old, vnodes, hooks, nextSibling, ns) {
+		if (old === vnodes || old == null && vnodes == null) return
+		else if (old == null || old.length === 0) createNodes(parent, vnodes, 0, vnodes.length, hooks, nextSibling, ns)
+		else if (vnodes == null || vnodes.length === 0) removeNodes(parent, old, 0, old.length)
+		else {
+			var isOldKeyed = old[0] != null && old[0].key != null
+			var isKeyed = vnodes[0] != null && vnodes[0].key != null
+			var start = 0, oldStart = 0
+			if (!isOldKeyed) while (oldStart < old.length && old[oldStart] == null) oldStart++
+			if (!isKeyed) while (start < vnodes.length && vnodes[start] == null) start++
+			if (isKeyed === null && isOldKeyed == null) return // both lists are full of nulls
+			if (isOldKeyed !== isKeyed) {
+				removeNodes(parent, old, oldStart, old.length)
+				createNodes(parent, vnodes, start, vnodes.length, hooks, nextSibling, ns)
+			} else if (!isKeyed) {
+				// Don't index past the end of either list (causes deopts).
+				var commonLength = old.length < vnodes.length ? old.length : vnodes.length
+				// Rewind if necessary to the first non-null index on either side.
+				// We could alternatively either explicitly create or remove nodes when `start !== oldStart`
+				// but that would be optimizing for sparse lists which are more rare than dense ones.
+				start = start < oldStart ? start : oldStart
+				for (; start < commonLength; start++) {
+					o = old[start]
+					v = vnodes[start]
+					if (o === v || o == null && v == null) continue
+					else if (o == null) createNode(parent, v, hooks, ns, getNextSibling(old, start + 1, nextSibling))
+					else if (v == null) removeNode(parent, o)
+					else updateNode(parent, o, v, hooks, getNextSibling(old, start + 1, nextSibling), ns)
+				}
+				if (old.length > commonLength) removeNodes(parent, old, start, old.length)
+				if (vnodes.length > commonLength) createNodes(parent, vnodes, start, vnodes.length, hooks, nextSibling, ns)
+			} else {
+				// keyed diff
+				var oldEnd = old.length - 1, end = vnodes.length - 1, map, o, v, oe, ve, topSibling
+
+				// bottom-up
+				while (oldEnd >= oldStart && end >= start) {
+					oe = old[oldEnd]
+					ve = vnodes[end]
+					if (oe.key !== ve.key) break
+					if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns)
+					if (ve.dom != null) nextSibling = ve.dom
+					oldEnd--, end--
+				}
+				// top-down
+				while (oldEnd >= oldStart && end >= start) {
+					o = old[oldStart]
+					v = vnodes[start]
+					if (o.key !== v.key) break
+					oldStart++, start++
+					if (o !== v) updateNode(parent, o, v, hooks, getNextSibling(old, oldStart, nextSibling), ns)
+				}
+				// swaps and list reversals
+				while (oldEnd >= oldStart && end >= start) {
+					if (start === end) break
+					if (o.key !== ve.key || oe.key !== v.key) break
+					topSibling = getNextSibling(old, oldStart, nextSibling)
+					moveNodes(parent, oe, topSibling)
+					if (oe !== v) updateNode(parent, oe, v, hooks, topSibling, ns)
+					if (++start <= --end) moveNodes(parent, o, nextSibling)
+					if (o !== ve) updateNode(parent, o, ve, hooks, nextSibling, ns)
+					if (ve.dom != null) nextSibling = ve.dom
+					oldStart++; oldEnd--
+					oe = old[oldEnd]
+					ve = vnodes[end]
+					o = old[oldStart]
+					v = vnodes[start]
+				}
+				// bottom up once again
+				while (oldEnd >= oldStart && end >= start) {
+					if (oe.key !== ve.key) break
+					if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns)
+					if (ve.dom != null) nextSibling = ve.dom
+					oldEnd--, end--
+					oe = old[oldEnd]
+					ve = vnodes[end]
+				}
+				if (start > end) removeNodes(parent, old, oldStart, oldEnd + 1)
+				else if (oldStart > oldEnd) createNodes(parent, vnodes, start, end + 1, hooks, nextSibling, ns)
+				else {
+					// inspired by ivi https://github.com/ivijs/ivi/ by Boris Kaul
+					var originalNextSibling = nextSibling, vnodesLength = end - start + 1, oldIndices = new Array(vnodesLength), li=0, i=0, pos = 2147483647, matched = 0, map, lisIndices
+					for (i = 0; i < vnodesLength; i++) oldIndices[i] = -1
+					for (i = end; i >= start; i--) {
+						if (map == null) map = getKeyMap(old, oldStart, oldEnd + 1)
+						ve = vnodes[i]
+						var oldIndex = map[ve.key]
+						if (oldIndex != null) {
+							pos = (oldIndex < pos) ? oldIndex : -1 // becomes -1 if nodes were re-ordered
+							oldIndices[i-start] = oldIndex
+							oe = old[oldIndex]
+							old[oldIndex] = null
+							if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns)
+							if (ve.dom != null) nextSibling = ve.dom
+							matched++
+						}
+					}
+					nextSibling = originalNextSibling
+					if (matched !== oldEnd - oldStart + 1) removeNodes(parent, old, oldStart, oldEnd + 1)
+					if (matched === 0) createNodes(parent, vnodes, start, end + 1, hooks, nextSibling, ns)
+					else {
+						if (pos === -1) {
+							// the indices of the indices of the items that are part of the
+							// longest increasing subsequence in the oldIndices list
+							lisIndices = makeLisIndices(oldIndices)
+							li = lisIndices.length - 1
+							for (i = end; i >= start; i--) {
+								v = vnodes[i]
+								if (oldIndices[i-start] === -1) createNode(parent, v, hooks, ns, nextSibling)
+								else {
+									if (lisIndices[li] === i - start) li--
+									else moveNodes(parent, v, nextSibling)
+								}
+								if (v.dom != null) nextSibling = vnodes[i].dom
+							}
+						} else {
+							for (i = end; i >= start; i--) {
+								v = vnodes[i]
+								if (oldIndices[i-start] === -1) createNode(parent, v, hooks, ns, nextSibling)
+								if (v.dom != null) nextSibling = vnodes[i].dom
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	function updateNode(parent, old, vnode, hooks, nextSibling, ns) {
+		var oldTag = old.tag, tag = vnode.tag
+		if (oldTag === tag) {
+			vnode.state = old.state
+			vnode.events = old.events
+			if (shouldNotUpdate(vnode, old)) return
+			if (typeof oldTag === "string") {
+				if (vnode.attrs != null) {
+					updateLifecycle(vnode.attrs, vnode, hooks)
+				}
+				switch (oldTag) {
+					case "#": updateText(old, vnode); break
+					case "<": updateHTML(parent, old, vnode, ns, nextSibling); break
+					case "[": updateFragment(parent, old, vnode, hooks, nextSibling, ns); break
+					default: updateElement(old, vnode, hooks, ns)
+				}
+			}
+			else updateComponent(parent, old, vnode, hooks, nextSibling, ns)
+		}
+		else {
+			removeNode(parent, old)
+			createNode(parent, vnode, hooks, ns, nextSibling)
+		}
+	}
+	function updateText(old, vnode) {
+		if (old.children.toString() !== vnode.children.toString()) {
+			old.dom.nodeValue = vnode.children
+		}
+		vnode.dom = old.dom
+	}
+	function updateHTML(parent, old, vnode, ns, nextSibling) {
+		if (old.children !== vnode.children) {
+			removeHTML(parent, old)
+			createHTML(parent, vnode, ns, nextSibling)
+		}
+		else {
+			vnode.dom = old.dom
+			vnode.domSize = old.domSize
+			vnode.instance = old.instance
+		}
+	}
+	function updateFragment(parent, old, vnode, hooks, nextSibling, ns) {
+		updateNodes(parent, old.children, vnode.children, hooks, nextSibling, ns)
+		var domSize = 0, children = vnode.children
+		vnode.dom = null
+		if (children != null) {
+			for (var i = 0; i < children.length; i++) {
+				var child = children[i]
+				if (child != null && child.dom != null) {
+					if (vnode.dom == null) vnode.dom = child.dom
+					domSize += child.domSize || 1
+				}
+			}
+			if (domSize !== 1) vnode.domSize = domSize
+		}
+	}
+	function updateElement(old, vnode, hooks, ns) {
+		var element = vnode.dom = old.dom
+		ns = getNameSpace(vnode) || ns
+
+		if (vnode.tag === "textarea") {
+			if (vnode.attrs == null) vnode.attrs = {}
+			if (vnode.text != null) {
+				vnode.attrs.value = vnode.text //FIXME handle multiple children
+				vnode.text = undefined
+			}
+		}
+		updateAttrs(vnode, old.attrs, vnode.attrs, ns)
+		if (!maybeSetContentEditable(vnode)) {
+			if (old.text != null && vnode.text != null && vnode.text !== "") {
+				if (old.text.toString() !== vnode.text.toString()) old.dom.firstChild.nodeValue = vnode.text
+			}
+			else {
+				if (old.text != null) old.children = [Vnode("#", undefined, undefined, old.text, undefined, old.dom.firstChild)]
+				if (vnode.text != null) vnode.children = [Vnode("#", undefined, undefined, vnode.text, undefined, undefined)]
+				updateNodes(element, old.children, vnode.children, hooks, null, ns)
+			}
+		}
+	}
+	function updateComponent(parent, old, vnode, hooks, nextSibling, ns) {
+		vnode.instance = Vnode.normalize(callHook.call(vnode.state.view, vnode))
+		if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument")
+		updateLifecycle(vnode.state, vnode, hooks)
+		if (vnode.attrs != null) updateLifecycle(vnode.attrs, vnode, hooks)
+		if (vnode.instance != null) {
+			if (old.instance == null) createNode(parent, vnode.instance, hooks, ns, nextSibling)
+			else updateNode(parent, old.instance, vnode.instance, hooks, nextSibling, ns)
+			vnode.dom = vnode.instance.dom
+			vnode.domSize = vnode.instance.domSize
+		}
+		else if (old.instance != null) {
+			removeNode(parent, old.instance)
+			vnode.dom = undefined
+			vnode.domSize = 0
+		}
+		else {
+			vnode.dom = old.dom
+			vnode.domSize = old.domSize
+		}
+	}
+	function getKeyMap(vnodes, start, end) {
+		var map = Object.create(null)
+		for (; start < end; start++) {
+			var vnode = vnodes[start]
+			if (vnode != null) {
+				var key = vnode.key
+				if (key != null) map[key] = start
+			}
+		}
+		return map
+	}
+	// Lifted from ivi https://github.com/ivijs/ivi/
+	// takes a list of unique numbers (-1 is special and can
+	// occur multiple times) and returns an array with the indices
+	// of the items that are part of the longest increasing
+	// subsequece
+	var lisTemp = []
+	function makeLisIndices(a) {
+		var result = [0]
+		var u = 0, v = 0, i = 0
+		var il = lisTemp.length = a.length
+		for (var i = 0; i < il; i++) lisTemp[i] = a[i]
+		for (var i = 0; i < il; ++i) {
+			if (a[i] === -1) continue
+			var j = result[result.length - 1]
+			if (a[j] < a[i]) {
+				lisTemp[i] = j
+				result.push(i)
+				continue
+			}
+			u = 0
+			v = result.length - 1
+			while (u < v) {
+				// Fast integer average without overflow.
+				// eslint-disable-next-line no-bitwise
+				var c = (u >>> 1) + (v >>> 1) + (u & v & 1)
+				if (a[result[c]] < a[i]) {
+					u = c + 1
+				}
+				else {
+					v = c
+				}
+			}
+			if (a[i] < a[result[u]]) {
+				if (u > 0) lisTemp[i] = result[u - 1]
+				result[u] = i
+			}
+		}
+		u = result.length
+		v = result[u - 1]
+		while (u-- > 0) {
+			result[u] = v
+			v = lisTemp[v]
+		}
+		lisTemp.length = 0
+		return result
+	}
+
+	function getNextSibling(vnodes, i, nextSibling) {
+		for (; i < vnodes.length; i++) {
+			if (vnodes[i] != null && vnodes[i].dom != null) return vnodes[i].dom
+		}
+		return nextSibling
+	}
+
+	// This covers a really specific edge case:
+	// - Parent node is keyed and contains child
+	// - Child is removed, returns unresolved promise in `onbeforeremove`
+	// - Parent node is moved in keyed diff
+	// - Remaining children still need moved appropriately
+	//
+	// Ideally, I'd track removed nodes as well, but that introduces a lot more
+	// complexity and I'm not exactly interested in doing that.
+	function moveNodes(parent, vnode, nextSibling) {
+		var frag = $doc.createDocumentFragment()
+		moveChildToFrag(parent, frag, vnode)
+		insertNode(parent, frag, nextSibling)
+	}
+	function moveChildToFrag(parent, frag, vnode) {
+		// Dodge the recursion overhead in a few of the most common cases.
+		while (vnode.dom != null && vnode.dom.parentNode === parent) {
+			if (typeof vnode.tag !== "string") {
+				vnode = vnode.instance
+				if (vnode != null) continue
+			} else if (vnode.tag === "<") {
+				for (var i = 0; i < vnode.instance.length; i++) {
+					frag.appendChild(vnode.instance[i])
+				}
+			} else if (vnode.tag !== "[") {
+				// Don't recurse for text nodes *or* elements, just fragments
+				frag.appendChild(vnode.dom)
+			} else if (vnode.children.length === 1) {
+				vnode = vnode.children[0]
+				if (vnode != null) continue
+			} else {
+				for (var i = 0; i < vnode.children.length; i++) {
+					var child = vnode.children[i]
+					if (child != null) moveChildToFrag(parent, frag, child)
+				}
+			}
+			break
+		}
+	}
+
+	function insertNode(parent, dom, nextSibling) {
+		if (nextSibling != null) parent.insertBefore(dom, nextSibling)
+		else parent.appendChild(dom)
+	}
+
+	function maybeSetContentEditable(vnode) {
+		if (vnode.attrs == null || (
+			vnode.attrs.contenteditable == null && // attribute
+			vnode.attrs.contentEditable == null // property
+		)) return false
+		var children = vnode.children
+		if (children != null && children.length === 1 && children[0].tag === "<") {
+			var content = children[0].children
+			if (vnode.dom.innerHTML !== content) vnode.dom.innerHTML = content
+		}
+		else if (vnode.text != null || children != null && children.length !== 0) throw new Error("Child node of a contenteditable must be trusted")
+		return true
+	}
+
+	//remove
+	function removeNodes(parent, vnodes, start, end) {
+		for (var i = start; i < end; i++) {
+			var vnode = vnodes[i]
+			if (vnode != null) removeNode(parent, vnode)
+		}
+	}
+	function removeNode(parent, vnode) {
+		var mask = 0
+		var original = vnode.state
+		var stateResult, attrsResult
+		if (typeof vnode.tag !== "string" && typeof vnode.state.onbeforeremove === "function") {
+			var result = callHook.call(vnode.state.onbeforeremove, vnode)
+			if (result != null && typeof result.then === "function") {
+				mask = 1
+				stateResult = result
+			}
+		}
+		if (vnode.attrs && typeof vnode.attrs.onbeforeremove === "function") {
+			var result = callHook.call(vnode.attrs.onbeforeremove, vnode)
+			if (result != null && typeof result.then === "function") {
+				// eslint-disable-next-line no-bitwise
+				mask |= 2
+				attrsResult = result
+			}
+		}
+		checkState(vnode, original)
+
+		// If we can, try to fast-path it and avoid all the overhead of awaiting
+		if (!mask) {
+			onremove(vnode)
+			removeChild(parent, vnode)
+		} else {
+			if (stateResult != null) {
+				var next = function () {
+					// eslint-disable-next-line no-bitwise
+					if (mask & 1) { mask &= 2; if (!mask) reallyRemove() }
+				}
+				stateResult.then(next, next)
+			}
+			if (attrsResult != null) {
+				var next = function () {
+					// eslint-disable-next-line no-bitwise
+					if (mask & 2) { mask &= 1; if (!mask) reallyRemove() }
+				}
+				attrsResult.then(next, next)
+			}
+		}
+
+		function reallyRemove() {
+			checkState(vnode, original)
+			onremove(vnode)
+			removeChild(parent, vnode)
+		}
+	}
+	function removeHTML(parent, vnode) {
+		for (var i = 0; i < vnode.instance.length; i++) {
+			parent.removeChild(vnode.instance[i])
+		}
+	}
+	function removeChild(parent, vnode) {
+		// Dodge the recursion overhead in a few of the most common cases.
+		while (vnode.dom != null && vnode.dom.parentNode === parent) {
+			if (typeof vnode.tag !== "string") {
+				vnode = vnode.instance
+				if (vnode != null) continue
+			} else if (vnode.tag === "<") {
+				removeHTML(parent, vnode)
+			} else {
+				if (vnode.tag !== "[") {
+					parent.removeChild(vnode.dom)
+					if (!Array.isArray(vnode.children)) break
+				}
+				if (vnode.children.length === 1) {
+					vnode = vnode.children[0]
+					if (vnode != null) continue
+				} else {
+					for (var i = 0; i < vnode.children.length; i++) {
+						var child = vnode.children[i]
+						if (child != null) removeChild(parent, child)
+					}
+				}
+			}
+			break
+		}
+	}
+	function onremove(vnode) {
+		if (typeof vnode.tag !== "string" && typeof vnode.state.onremove === "function") callHook.call(vnode.state.onremove, vnode)
+		if (vnode.attrs && typeof vnode.attrs.onremove === "function") callHook.call(vnode.attrs.onremove, vnode)
+		if (typeof vnode.tag !== "string") {
+			if (vnode.instance != null) onremove(vnode.instance)
+		} else {
+			var children = vnode.children
+			if (Array.isArray(children)) {
+				for (var i = 0; i < children.length; i++) {
+					var child = children[i]
+					if (child != null) onremove(child)
+				}
+			}
+		}
+	}
+
+	//attrs
+	function setAttrs(vnode, attrs, ns) {
+		for (var key in attrs) {
+			setAttr(vnode, key, null, attrs[key], ns)
+		}
+	}
+	function setAttr(vnode, key, old, value, ns) {
+		if (key === "key" || key === "is" || value == null || isLifecycleMethod(key) || (old === value && !isFormAttribute(vnode, key)) && typeof value !== "object") return
+		if (key[0] === "o" && key[1] === "n") return updateEvent(vnode, key, value)
+		if (key.slice(0, 6) === "xlink:") vnode.dom.setAttributeNS("http://www.w3.org/1999/xlink", key.slice(6), value)
+		else if (key === "style") updateStyle(vnode.dom, old, value)
+		else if (hasPropertyKey(vnode, key, ns)) {
+			if (key === "value") {
+				// Only do the coercion if we're actually going to check the value.
+				/* eslint-disable no-implicit-coercion */
+				//setting input[value] to same value by typing on focused element moves cursor to end in Chrome
+				if ((vnode.tag === "input" || vnode.tag === "textarea") && vnode.dom.value === "" + value && vnode.dom === activeElement()) return
+				//setting select[value] to same value while having select open blinks select dropdown in Chrome
+				if (vnode.tag === "select" && old !== null && vnode.dom.value === "" + value) return
+				//setting option[value] to same value while having select open blinks select dropdown in Chrome
+				if (vnode.tag === "option" && old !== null && vnode.dom.value === "" + value) return
+				/* eslint-enable no-implicit-coercion */
+			}
+			// If you assign an input type that is not supported by IE 11 with an assignment expression, an error will occur.
+			if (vnode.tag === "input" && key === "type") vnode.dom.setAttribute(key, value)
+			else vnode.dom[key] = value
+		} else {
+			if (typeof value === "boolean") {
+				if (value) vnode.dom.setAttribute(key, "")
+				else vnode.dom.removeAttribute(key)
+			}
+			else vnode.dom.setAttribute(key === "className" ? "class" : key, value)
+		}
+	}
+	function removeAttr(vnode, key, old, ns) {
+		if (key === "key" || key === "is" || old == null || isLifecycleMethod(key)) return
+		if (key[0] === "o" && key[1] === "n" && !isLifecycleMethod(key)) updateEvent(vnode, key, undefined)
+		else if (key === "style") updateStyle(vnode.dom, old, null)
+		else if (
+			hasPropertyKey(vnode, key, ns)
+			&& key !== "className"
+			&& !(key === "value" && (
+				vnode.tag === "option"
+				|| vnode.tag === "select" && vnode.dom.selectedIndex === -1 && vnode.dom === activeElement()
+			))
+			&& !(vnode.tag === "input" && key === "type")
+		) {
+			vnode.dom[key] = null
+		} else {
+			var nsLastIndex = key.indexOf(":")
+			if (nsLastIndex !== -1) key = key.slice(nsLastIndex + 1)
+			if (old !== false) vnode.dom.removeAttribute(key === "className" ? "class" : key)
+		}
+	}
+	function setLateSelectAttrs(vnode, attrs) {
+		if ("value" in attrs) {
+			if(attrs.value === null) {
+				if (vnode.dom.selectedIndex !== -1) vnode.dom.value = null
+			} else {
+				var normalized = "" + attrs.value // eslint-disable-line no-implicit-coercion
+				if (vnode.dom.value !== normalized || vnode.dom.selectedIndex === -1) {
+					vnode.dom.value = normalized
+				}
+			}
+		}
+		if ("selectedIndex" in attrs) setAttr(vnode, "selectedIndex", null, attrs.selectedIndex, undefined)
+	}
+	function updateAttrs(vnode, old, attrs, ns) {
+		if (attrs != null) {
+			for (var key in attrs) {
+				setAttr(vnode, key, old && old[key], attrs[key], ns)
+			}
+		}
+		var val
+		if (old != null) {
+			for (var key in old) {
+				if (((val = old[key]) != null) && (attrs == null || attrs[key] == null)) {
+					removeAttr(vnode, key, val, ns)
+				}
+			}
+		}
+	}
+	function isFormAttribute(vnode, attr) {
+		return attr === "value" || attr === "checked" || attr === "selectedIndex" || attr === "selected" && vnode.dom === activeElement() || vnode.tag === "option" && vnode.dom.parentNode === $doc.activeElement
+	}
+	function isLifecycleMethod(attr) {
+		return attr === "oninit" || attr === "oncreate" || attr === "onupdate" || attr === "onremove" || attr === "onbeforeremove" || attr === "onbeforeupdate"
+	}
+	function hasPropertyKey(vnode, key, ns) {
+		// Filter out namespaced keys
+		return ns === undefined && (
+			// If it's a custom element, just keep it.
+			vnode.tag.indexOf("-") > -1 || vnode.attrs != null && vnode.attrs.is ||
+			// If it's a normal element, let's try to avoid a few browser bugs.
+			key !== "href" && key !== "list" && key !== "form" && key !== "width" && key !== "height"// && key !== "type"
+			// Defer the property check until *after* we check everything.
+		) && key in vnode.dom
+	}
+
+	//style
+	var uppercaseRegex = /[A-Z]/g
+	function toLowerCase(capital) { return "-" + capital.toLowerCase() }
+	function normalizeKey(key) {
+		return key[0] === "-" && key[1] === "-" ? key :
+			key === "cssFloat" ? "float" :
+				key.replace(uppercaseRegex, toLowerCase)
+	}
+	function updateStyle(element, old, style) {
+		if (old === style) {
+			// Styles are equivalent, do nothing.
+		} else if (style == null) {
+			// New style is missing, just clear it.
+			element.style.cssText = ""
+		} else if (typeof style !== "object") {
+			// New style is a string, let engine deal with patching.
+			element.style.cssText = style
+		} else if (old == null || typeof old !== "object") {
+			// `old` is missing or a string, `style` is an object.
+			element.style.cssText = ""
+			// Add new style properties
+			for (var key in style) {
+				var value = style[key]
+				if (value != null) element.style.setProperty(normalizeKey(key), String(value))
+			}
+		} else {
+			// Both old & new are (different) objects.
+			// Update style properties that have changed
+			for (var key in style) {
+				var value = style[key]
+				if (value != null && (value = String(value)) !== String(old[key])) {
+					element.style.setProperty(normalizeKey(key), value)
+				}
+			}
+			// Remove style properties that no longer exist
+			for (var key in old) {
+				if (old[key] != null && style[key] == null) {
+					element.style.removeProperty(normalizeKey(key))
+				}
+			}
+		}
+	}
+
+	// Here's an explanation of how this works:
+	// 1. The event names are always (by design) prefixed by `on`.
+	// 2. The EventListener interface accepts either a function or an object
+	//    with a `handleEvent` method.
+	// 3. The object does not inherit from `Object.prototype`, to avoid
+	//    any potential interference with that (e.g. setters).
+	// 4. The event name is remapped to the handler before calling it.
+	// 5. In function-based event handlers, `ev.target === this`. We replicate
+	//    that below.
+	// 6. In function-based event handlers, `return false` prevents the default
+	//    action and stops event propagation. We replicate that below.
+	function EventDict() {
+		// Save this, so the current redraw is correctly tracked.
+		this._ = currentRedraw
+	}
+	EventDict.prototype = Object.create(null)
+	EventDict.prototype.handleEvent = function (ev) {
+		var handler = this["on" + ev.type]
+		var result
+		if (typeof handler === "function") result = handler.call(ev.currentTarget, ev)
+		else if (typeof handler.handleEvent === "function") handler.handleEvent(ev)
+		if (this._ && ev.redraw !== false) (0, this._)()
+		if (result === false) {
+			ev.preventDefault()
+			ev.stopPropagation()
+		}
+	}
+
+	//event
+	function updateEvent(vnode, key, value) {
+		if (vnode.events != null) {
+			if (vnode.events[key] === value) return
+			if (value != null && (typeof value === "function" || typeof value === "object")) {
+				if (vnode.events[key] == null) vnode.dom.addEventListener(key.slice(2), vnode.events, false)
+				vnode.events[key] = value
+			} else {
+				if (vnode.events[key] != null) vnode.dom.removeEventListener(key.slice(2), vnode.events, false)
+				vnode.events[key] = undefined
+			}
+		} else if (value != null && (typeof value === "function" || typeof value === "object")) {
+			vnode.events = new EventDict()
+			vnode.dom.addEventListener(key.slice(2), vnode.events, false)
+			vnode.events[key] = value
+		}
+	}
+
+	//lifecycle
+	function initLifecycle(source, vnode, hooks) {
+		if (typeof source.oninit === "function") callHook.call(source.oninit, vnode)
+		if (typeof source.oncreate === "function") hooks.push(callHook.bind(source.oncreate, vnode))
+	}
+	function updateLifecycle(source, vnode, hooks) {
+		if (typeof source.onupdate === "function") hooks.push(callHook.bind(source.onupdate, vnode))
+	}
+	function shouldNotUpdate(vnode, old) {
+		do {
+			if (vnode.attrs != null && typeof vnode.attrs.onbeforeupdate === "function") {
+				var force = callHook.call(vnode.attrs.onbeforeupdate, vnode, old)
+				if (force !== undefined && !force) break
+			}
+			if (typeof vnode.tag !== "string" && typeof vnode.state.onbeforeupdate === "function") {
+				var force = callHook.call(vnode.state.onbeforeupdate, vnode, old)
+				if (force !== undefined && !force) break
+			}
+			return false
+		} while (false); // eslint-disable-line no-constant-condition
+		vnode.dom = old.dom
+		vnode.domSize = old.domSize
+		vnode.instance = old.instance
+		// One would think having the actual latest attributes would be ideal,
+		// but it doesn't let us properly diff based on our current internal
+		// representation. We have to save not only the old DOM info, but also
+		// the attributes used to create it, as we diff *that*, not against the
+		// DOM directly (with a few exceptions in `setAttr`). And, of course, we
+		// need to save the children and text as they are conceptually not
+		// unlike special "attributes" internally.
+		vnode.attrs = old.attrs
+		vnode.children = old.children
+		vnode.text = old.text
+		return true
+	}
+
+	return function(dom, vnodes, redraw) {
+		if (!dom) throw new TypeError("Ensure the DOM element being passed to m.route/m.mount/m.render is not undefined.")
+		var hooks = []
+		var active = activeElement()
+		var namespace = dom.namespaceURI
+
+		// First time rendering into a node clears it out
+		if (dom.vnodes == null) dom.textContent = ""
+
+		vnodes = Vnode.normalizeChildren(Array.isArray(vnodes) ? vnodes : [vnodes])
+		var prevRedraw = currentRedraw
+		try {
+			currentRedraw = typeof redraw === "function" ? redraw : undefined
+			updateNodes(dom, dom.vnodes, vnodes, hooks, null, namespace === "http://www.w3.org/1999/xhtml" ? undefined : namespace)
+		} finally {
+			currentRedraw = prevRedraw
+		}
+		dom.vnodes = vnodes
+		// `document.activeElement` can return null: https://html.spec.whatwg.org/multipage/interaction.html#dom-document-activeelement
+		if (active != null && activeElement() !== active && typeof active.focus === "function") active.focus()
+		for (var i = 0; i < hooks.length; i++) hooks[i]()
+	}
+}
+  })();
+});
+
+require.register("mithril/render/trust.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var Vnode = require("../render/vnode")
+
+module.exports = function(html) {
+	if (html == null) html = ""
+	return Vnode("<", undefined, undefined, html, undefined, undefined)
+}
+  })();
+});
+
+require.register("mithril/render/vnode.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+function Vnode(tag, key, attrs, children, text, dom) {
+	return {tag: tag, key: key, attrs: attrs, children: children, text: text, dom: dom, domSize: undefined, state: undefined, events: undefined, instance: undefined}
+}
+Vnode.normalize = function(node) {
+	if (Array.isArray(node)) return Vnode("[", undefined, undefined, Vnode.normalizeChildren(node), undefined, undefined)
+	if (node == null || typeof node === "boolean") return null
+	if (typeof node === "object") return node
+	return Vnode("#", undefined, undefined, String(node), undefined, undefined)
+}
+Vnode.normalizeChildren = function(input) {
+	var children = []
+	if (input.length) {
+		var isKeyed = input[0] != null && input[0].key != null
+		// Note: this is a *very* perf-sensitive check.
+		// Fun fact: merging the loop like this is somehow faster than splitting
+		// it, noticeably so.
+		for (var i = 1; i < input.length; i++) {
+			if ((input[i] != null && input[i].key != null) !== isKeyed) {
+				throw new TypeError("Vnodes must either always have keys or never have keys!")
+			}
+		}
+		for (var i = 0; i < input.length; i++) {
+			children[i] = Vnode.normalize(input[i])
+		}
+	}
+	return children
+}
+
+module.exports = Vnode
+  })();
+});
+
+require.register("mithril/request.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var PromisePolyfill = require("./promise/promise")
+var mountRedraw = require("./mount-redraw")
+
+module.exports = require("./request/request")(window, PromisePolyfill, mountRedraw.redraw)
+  })();
+});
+
+require.register("mithril/request/request.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var buildPathname = require("../pathname/build")
+
+module.exports = function($window, Promise, oncompletion) {
+	var callbackCount = 0
+
+	function PromiseProxy(executor) {
+		return new Promise(executor)
+	}
+
+	// In case the global Promise is some userland library's where they rely on
+	// `foo instanceof this.constructor`, `this.constructor.resolve(value)`, or
+	// similar. Let's *not* break them.
+	PromiseProxy.prototype = Promise.prototype
+	PromiseProxy.__proto__ = Promise // eslint-disable-line no-proto
+
+	function makeRequest(factory) {
+		return function(url, args) {
+			if (typeof url !== "string") { args = url; url = url.url }
+			else if (args == null) args = {}
+			var promise = new Promise(function(resolve, reject) {
+				factory(buildPathname(url, args.params), args, function (data) {
+					if (typeof args.type === "function") {
+						if (Array.isArray(data)) {
+							for (var i = 0; i < data.length; i++) {
+								data[i] = new args.type(data[i])
+							}
+						}
+						else data = new args.type(data)
+					}
+					resolve(data)
+				}, reject)
+			})
+			if (args.background === true) return promise
+			var count = 0
+			function complete() {
+				if (--count === 0 && typeof oncompletion === "function") oncompletion()
+			}
+
+			return wrap(promise)
+
+			function wrap(promise) {
+				var then = promise.then
+				// Set the constructor, so engines know to not await or resolve
+				// this as a native promise. At the time of writing, this is
+				// only necessary for V8, but their behavior is the correct
+				// behavior per spec. See this spec issue for more details:
+				// https://github.com/tc39/ecma262/issues/1577. Also, see the
+				// corresponding comment in `request/tests/test-request.js` for
+				// a bit more background on the issue at hand.
+				promise.constructor = PromiseProxy
+				promise.then = function() {
+					count++
+					var next = then.apply(promise, arguments)
+					next.then(complete, function(e) {
+						complete()
+						if (count === 0) throw e
+					})
+					return wrap(next)
+				}
+				return promise
+			}
+		}
+	}
+
+	function hasHeader(args, name) {
+		for (var key in args.headers) {
+			if ({}.hasOwnProperty.call(args.headers, key) && name.test(key)) return true
+		}
+		return false
+	}
+
+	return {
+		request: makeRequest(function(url, args, resolve, reject) {
+			var method = args.method != null ? args.method.toUpperCase() : "GET"
+			var body = args.body
+			var assumeJSON = (args.serialize == null || args.serialize === JSON.serialize) && !(body instanceof $window.FormData)
+			var responseType = args.responseType || (typeof args.extract === "function" ? "" : "json")
+
+			var xhr = new $window.XMLHttpRequest(), aborted = false
+			var original = xhr, replacedAbort
+			var abort = xhr.abort
+
+			xhr.abort = function() {
+				aborted = true
+				abort.call(this)
+			}
+
+			xhr.open(method, url, args.async !== false, typeof args.user === "string" ? args.user : undefined, typeof args.password === "string" ? args.password : undefined)
+
+			if (assumeJSON && body != null && !hasHeader(args, /^content-type$/i)) {
+				xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8")
+			}
+			if (typeof args.deserialize !== "function" && !hasHeader(args, /^accept$/i)) {
+				xhr.setRequestHeader("Accept", "application/json, text/*")
+			}
+			if (args.withCredentials) xhr.withCredentials = args.withCredentials
+			if (args.timeout) xhr.timeout = args.timeout
+			xhr.responseType = responseType
+
+			for (var key in args.headers) {
+				if ({}.hasOwnProperty.call(args.headers, key)) {
+					xhr.setRequestHeader(key, args.headers[key])
+				}
+			}
+
+			xhr.onreadystatechange = function(ev) {
+				// Don't throw errors on xhr.abort().
+				if (aborted) return
+
+				if (ev.target.readyState === 4) {
+					try {
+						var success = (ev.target.status >= 200 && ev.target.status < 300) || ev.target.status === 304 || (/^file:\/\//i).test(url)
+						// When the response type isn't "" or "text",
+						// `xhr.responseText` is the wrong thing to use.
+						// Browsers do the right thing and throw here, and we
+						// should honor that and do the right thing by
+						// preferring `xhr.response` where possible/practical.
+						var response = ev.target.response, message
+
+						if (responseType === "json") {
+							// For IE and Edge, which don't implement
+							// `responseType: "json"`.
+							if (!ev.target.responseType && typeof args.extract !== "function") response = JSON.parse(ev.target.responseText)
+						} else if (!responseType || responseType === "text") {
+							// Only use this default if it's text. If a parsed
+							// document is needed on old IE and friends (all
+							// unsupported), the user should use a custom
+							// `config` instead. They're already using this at
+							// their own risk.
+							if (response == null) response = ev.target.responseText
+						}
+
+						if (typeof args.extract === "function") {
+							response = args.extract(ev.target, args)
+							success = true
+						} else if (typeof args.deserialize === "function") {
+							response = args.deserialize(response)
+						}
+						if (success) resolve(response)
+						else {
+							try { message = ev.target.responseText }
+							catch (e) { message = response }
+							var error = new Error(message)
+							error.code = ev.target.status
+							error.response = response
+							reject(error)
+						}
+					}
+					catch (e) {
+						reject(e)
+					}
+				}
+			}
+
+			if (typeof args.config === "function") {
+				xhr = args.config(xhr, args, url) || xhr
+
+				// Propagate the `abort` to any replacement XHR as well.
+				if (xhr !== original) {
+					replacedAbort = xhr.abort
+					xhr.abort = function() {
+						aborted = true
+						replacedAbort.call(this)
+					}
+				}
+			}
+
+			if (body == null) xhr.send()
+			else if (typeof args.serialize === "function") xhr.send(args.serialize(body))
+			else if (body instanceof $window.FormData) xhr.send(body)
+			else xhr.send(JSON.stringify(body))
+		}),
+		jsonp: makeRequest(function(url, args, resolve, reject) {
+			var callbackName = args.callbackName || "_mithril_" + Math.round(Math.random() * 1e16) + "_" + callbackCount++
+			var script = $window.document.createElement("script")
+			$window[callbackName] = function(data) {
+				delete $window[callbackName]
+				script.parentNode.removeChild(script)
+				resolve(data)
+			}
+			script.onerror = function() {
+				delete $window[callbackName]
+				script.parentNode.removeChild(script)
+				reject(new Error("JSONP request failed"))
+			}
+			script.src = url + (url.indexOf("?") < 0 ? "?" : "&") +
+				encodeURIComponent(args.callbackKey || "callback") + "=" +
+				encodeURIComponent(callbackName)
+			$window.document.documentElement.appendChild(script)
+		}),
+	}
+}
+  })();
+});
+
+require.register("mithril/route.js", function(exports, require, module) {
+  require = __makeRelativeRequire(require, {}, "mithril");
+  (function() {
+    "use strict"
+
+var mountRedraw = require("./mount-redraw")
+
+module.exports = require("./api/router")(window, mountRedraw)
+  })();
+});
+require.alias("mithril-stream/stream.js", "mithril-stream");require.register("___globals___", function(exports, require, module) {
+  
+});})();require('___globals___');
+
+'use strict';
+
+/* jshint ignore:start */
+(function () {
+  var WebSocket = window.WebSocket || window.MozWebSocket;
+  var br = window.brunch = window.brunch || {};
+  var ar = br['auto-reload'] = br['auto-reload'] || {};
+  if (!WebSocket || ar.disabled) return;
+  if (window._ar) return;
+  window._ar = true;
+
+  var cacheBuster = function cacheBuster(url) {
+    var date = Math.round(Date.now() / 1000).toString();
+    url = url.replace(/(\&|\\?)cacheBuster=\d*/, '');
+    return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'cacheBuster=' + date;
+  };
+
+  var browser = navigator.userAgent.toLowerCase();
+  var forceRepaint = ar.forceRepaint || browser.indexOf('chrome') > -1;
+
+  var reloaders = {
+    page: function page() {
+      window.location.reload(true);
+    },
+
+    stylesheet: function stylesheet() {
+      [].slice.call(document.querySelectorAll('link[rel=stylesheet]')).filter(function (link) {
+        var val = link.getAttribute('data-autoreload');
+        return link.href && val != 'false';
+      }).forEach(function (link) {
+        link.href = cacheBuster(link.href);
+      });
+
+      // Hack to force page repaint after 25ms.
+      if (forceRepaint) setTimeout(function () {
+        document.body.offsetHeight;
+      }, 25);
+    },
+
+    javascript: function javascript() {
+      var scripts = [].slice.call(document.querySelectorAll('script'));
+      var textScripts = scripts.map(function (script) {
+        return script.text;
+      }).filter(function (text) {
+        return text.length > 0;
+      });
+      var srcScripts = scripts.filter(function (script) {
+        return script.src;
+      });
+
+      var loaded = 0;
+      var all = srcScripts.length;
+      var onLoad = function onLoad() {
+        loaded = loaded + 1;
+        if (loaded === all) {
+          textScripts.forEach(function (script) {
+            eval(script);
+          });
+        }
+      };
+
+      srcScripts.forEach(function (script) {
+        var src = script.src;
+        script.remove();
+        var newScript = document.createElement('script');
+        newScript.src = cacheBuster(src);
+        newScript.async = true;
+        newScript.onload = onLoad;
+        document.head.appendChild(newScript);
+      });
+    }
+  };
+  var port = ar.port || 9485;
+  var host = br.server || window.location.hostname || 'localhost';
+
+  var connect = function connect() {
+    var connection = new WebSocket('ws://' + host + ':' + port);
+    connection.onmessage = function (event) {
+      if (ar.disabled) return;
+      var message = event.data;
+      var reloader = reloaders[message] || reloaders.page;
+      reloader();
+    };
+    connection.onerror = function () {
+      if (connection.readyState) connection.close();
+    };
+    connection.onclose = function () {
+      window.setTimeout(connect, 1000);
+    };
+  };
+  connect();
+})();
+/* jshint ignore:end */
+;
+//# sourceMappingURL=vendor.js.map

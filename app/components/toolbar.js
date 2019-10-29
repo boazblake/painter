@@ -32,40 +32,10 @@ const EaselTools = () => {
   }
 }
 
-const GalleryTools = () => {
-  return {
-    view: ({ attrs: { mdl } }) => {
-      return m(
-        "aside.navbar",
-        mdl.canvas() !== null && [
-          m(Button, {
-            mdl,
-            classList: "toolBtn",
-            action: (e) => {
-              e.redraw = false
-              let a = document.createElement("a")
-              a.href = mdl.dom().toDataURL("image/png")
-              a.download = "image_name.jpg"
-              a.style.display = "none"
-              document.body.appendChild(a)
-              a.click()
-              a.remove()
-            },
-            download: `${mdl.canvas()}`,
-            label: "Download"
-          })
-        ]
-      )
-    }
-  }
-}
-
 const Toolbar = () => {
   return {
     view: ({ attrs: { mdl } }) =>
-      m.route.get() == "/easel"
-        ? m(EaselTools, { mdl })
-        : m(GalleryTools, { mdl })
+      m.route.get() == "/easel" && m(EaselTools, { mdl })
   }
 }
 

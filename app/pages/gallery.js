@@ -2,15 +2,43 @@ import m from "mithril"
 import Canvas from "../components/canvas"
 import Button from "../components/button"
 
+const GalleryTools = () => {
+  return {
+    view: ({ attrs: { mdl } }) => {
+      return m(
+        "aside.navbar.toolbar",
+        mdl.canvas() !== null && [
+          m(Button, {
+            mdl,
+            classList: "toolBtn",
+            action: (e) => {
+              e.redraw = false
+              let a = document.createElement("a")
+              a.href = mdl.dom().toDataURL("image/png")
+              a.download = "image_name.jpg"
+              a.style.display = "none"
+              document.body.appendChild(a)
+              a.click()
+              a.remove()
+            },
+            download: `${mdl.canvas()}`,
+            label: "Download"
+          })
+        ]
+      )
+    }
+  }
+}
+
 const Modal = ({ attrs: { close } }) => {
   return {
-    view: ({ children, attrs: { close } }) =>
+    view: ({ children, attrs: { mdl } }) =>
       m(
         ".modalBackground",
         {
           onclick: () => close()
         },
-        m(".modal", children)
+        m(".modal", [children, m(GalleryTools, { mdl })])
       )
   }
 }
@@ -49,7 +77,8 @@ const Gallery = () => {
               close: () => {
                 resetModal({ attrs: { mdl } })
                 state.close(state)
-              }
+              },
+              mdl
             },
             m(Canvas, {
               ctx: mdl.canvas(),

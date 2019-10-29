@@ -19,7 +19,7 @@
   justify-content: space-evenly;
   align-content: center;
   height: 50px;
-  padding: 10px 0;
+  padding: 10px 10px;
   z-index: 11;
 }
 
@@ -41,6 +41,10 @@
   background: rgba(236, 240, 241, 1);
   box-shadow: 100% 0 0 0 rgba(0, 0, 0, 0.25) inset,
     -100% 0 0 0 rgba(0, 0, 0, 0.25) inset;
+}
+
+.toolbar {
+  background-color: transparent;
 }
 
 .toolBtn {
