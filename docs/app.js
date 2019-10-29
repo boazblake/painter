@@ -240,6 +240,7 @@ var Navbar = function Navbar() {
         classList: "navBtn",
         action: function action() {
           mdl.preventUpdate(false);
+          mdl.orientation = "portrait";
           _mithril2.default.route.set("/print");
         },
         label: "View Gallery"
@@ -285,6 +286,7 @@ var EaselTools = function EaselTools() {
         classList: "toolBtn",
         action: function action() {
           mdl.preventUpdate(true);
+          mdl.orientation = "portrait";
           _mithril2.default.route.set("/easel");
         },
         label: "New Painting"

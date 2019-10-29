@@ -11,9 +11,10 @@ const EaselTools = () => {
           classList: "toolBtn",
           action: () => {
             mdl.preventUpdate(true)
+            mdl.orientation = "portrait"
             m.route.set("/easel")
           },
-          label: "New Painting",
+          label: "New Painting"
         }),
         m(Button, {
           mdl,
@@ -25,11 +26,9 @@ const EaselTools = () => {
               ? (mdl.orientation = "animated.rollAround.landscape")
               : (mdl.orientation = "animated.rollAround.portrait")
           },
-          label: mdl.orientation.includes("portrait")
-            ? "landscape"
-            : "portrait",
+          label: mdl.orientation.includes("portrait") ? "landscape" : "portrait"
         })
-      ),
+      )
   }
 }
 
@@ -42,7 +41,7 @@ const GalleryTools = () => {
           m(Button, {
             mdl,
             classList: "toolBtn",
-            action: e => {
+            action: (e) => {
               e.redraw = false
               let a = document.createElement("a")
               a.href = mdl.dom().toDataURL("image/png")
@@ -53,11 +52,11 @@ const GalleryTools = () => {
               a.remove()
             },
             download: `${mdl.canvas()}`,
-            label: "Download",
-          }),
+            label: "Download"
+          })
         ]
       )
-    },
+    }
   }
 }
 
@@ -66,7 +65,7 @@ const Toolbar = () => {
     view: ({ attrs: { mdl } }) =>
       m.route.get() == "/easel"
         ? m(EaselTools, { mdl })
-        : m(GalleryTools, { mdl }),
+        : m(GalleryTools, { mdl })
   }
 }
 

@@ -14,6 +14,7 @@ const Navbar = () => {
                 classList: "navBtn",
                 action: () => {
                   mdl.preventUpdate(false)
+                  mdl.orientation = "portrait"
                   m.route.set("/print")
                 },
                 label: "View Gallery"
