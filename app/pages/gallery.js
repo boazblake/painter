@@ -5,6 +5,7 @@ import Button from "../components/button"
 const GalleryTools = () => {
   return {
     view: ({ attrs: { mdl } }) => {
+      console.log("canvas", mdl.canvas())
       return m(
         "aside.navbar.toolbar",
         mdl.canvas() !== null && [
@@ -15,7 +16,7 @@ const GalleryTools = () => {
               e.redraw = false
               let a = document.createElement("a")
               a.href = mdl.dom().toDataURL("image/png")
-              a.download = "image_name.jpg"
+              a.download = `AI_Painter_lot#${mdl.artworks.length}.jpg`
               a.style.display = "none"
               document.body.appendChild(a)
               a.click()
@@ -65,6 +66,7 @@ const Gallery = () => {
                 mdl.canvas(image)
                 mdl.dom(dom)
                 state.close(state)
+                window.scrollTo(0, 0)
               },
               label: m(Canvas, { mdl, ctx: art, classList: "canvas" })
             })
