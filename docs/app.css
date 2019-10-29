@@ -3654,7 +3654,7 @@
     animation-iteration-count: 1 !important;
   }
 }
-@import 'animations.css'
+/* @import 'animations.css' */
 
 * {
   font-family: Montserrat, Sans-Serif;
@@ -3717,7 +3717,6 @@
   border: none;
   transition: width 0.6s;
 }
-
 
 .easel {
   display: flex;
