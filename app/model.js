@@ -39,6 +39,19 @@ export const animateComponentEntrance = (idx, transition) => ({ dom }) => {
   }, idx * 100 + 20)
 }
 
+export const animateComponentExit = (idx, transition) => ({ dom }) => {
+  console.log(dom)
+  dom.style.opacity = 1
+
+  return new Promise(function(resolve) {
+    setTimeout(() => {
+      dom.classList.add(transition)
+      dom.style.opacity = 0
+    }, idx * 100 + 20)
+    dom.addEventListener("animationend", resolve)
+  })
+}
+
 const shapes = ["circle", "square", "triangle"]
 
 const Model = {
@@ -51,6 +64,7 @@ const Model = {
   canvas: Stream(null),
   ctx: Stream(null),
   dom: Stream(null),
+  rotateCanvas: Stream(0),
   saveArt,
   log,
   orientation: "portrait"

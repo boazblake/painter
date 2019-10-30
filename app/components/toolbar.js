@@ -21,6 +21,19 @@ const EaselTools = () => {
           classList: "toolBtn",
           action: () => {
             mdl.preventUpdate(false)
+            mdl.orientation = "portrait.animated"
+            mdl.rotateCanvas(
+              mdl.rotateCanvas() + 90 >= 360 ? 0 : mdl.rotateCanvas() + 90
+            )
+            m.route.set("/easel")
+          },
+          label: "Rotate Painting Clockwise"
+        }),
+        m(Button, {
+          mdl,
+          classList: "toolBtn",
+          action: () => {
+            mdl.preventUpdate(false)
 
             mdl.orientation.includes("portrait")
               ? (mdl.orientation = "animated.rollAround.landscape")

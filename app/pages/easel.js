@@ -26,9 +26,9 @@ const Easel = () => {
           id: "canvas",
           mdl,
           classList: mdl.orientation,
-          ctx: mdl.canvas(),
+          ctx: mdl.canvas()
         })
-      ),
+      )
   }
 }
 

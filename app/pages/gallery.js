@@ -1,7 +1,7 @@
 import m from "mithril"
 import Canvas from "../components/canvas"
 import Button from "../components/button"
-import { animateComponentEntrance } from "../model.js"
+import { animateComponentEntrance, animateComponentExit } from "../model.js"
 
 const GalleryTools = () => {
   return {
@@ -39,7 +39,7 @@ const Modal = ({ attrs: { close } }) => {
         {
           onclick: () => close()
         },
-        m(".modal", [children, m(GalleryTools, { mdl })])
+        m(".modal", children)
       )
   }
 }
@@ -51,7 +51,8 @@ const Gallery = () => {
     show: false,
     close: (state) => (state.show = !state.show),
     oninit: resetModal,
-    oncreate: ({ dom }) => [].map((c) => dom.classList.add(c)),
+    oncreate: ({ dom }) =>
+      Array.from(dom.children).map((c) => (c.style.opacity = 0)),
     view: ({ state, attrs: { mdl } }) => {
       return [
         m(
@@ -84,10 +85,15 @@ const Gallery = () => {
               },
               mdl
             },
-            m(Canvas, {
-              ctx: mdl.canvas(),
-              classList: "canvas"
-            })
+            [
+              m(Canvas, {
+                mdl,
+
+                ctx: mdl.canvas(),
+                classList: "canvas"
+              }),
+              m(GalleryTools, { mdl })
+            ]
           )
       ]
     }

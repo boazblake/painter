@@ -2885,7 +2885,7 @@
 
 @-webkit-keyframes rollAround {
   from {
-    opacity: 1;
+    opacity: 0;
     -webkit-transform: translate3d(0, 0, 0) rotate3d(0, 0, 1, 0deg);
     transform: translate3d(0, 0, 0) rotate3d(0, 0, 2, -12deg);
   }
@@ -2899,7 +2899,7 @@
 
 @keyframes rollAround {
   from {
-    opacity: 1;
+    opacity: 0;
     -webkit-transform: translate3d(0, 0, 0) rotate3d(0, 0, 1, 0deg);
     transform: translate3d(0, 0, 0) rotate3d(0, 0, 2, -12deg);
   }
