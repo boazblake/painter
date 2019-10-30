@@ -3,32 +3,40 @@ import Stream from "mithril-stream"
 const WIDTH = Stream(600)
 const HEIGHT = Stream(600)
 
-const getDpr = size => size * window.devicePixelRatio || 1
+const getDpr = (size) => size * window.devicePixelRatio || 1
 
-export const log = m => v => {
+export const log = (m) => (v) => {
   console.log(m, v)
   return v
 }
 
 const rand = (min, max) => Math.floor(Math.random() * (max - min) + min)
-export const last = xs => xs[xs.length - 1]
+export const last = (xs) => xs[xs.length - 1]
 export const rest = ([head, ...rest]) => rest
 
-export const getPosition = mdl => ({
+export const getPosition = (mdl) => ({
   x: rand(0, mdl.width()),
-  y: rand(0, mdl.height()),
+  y: rand(0, mdl.height())
 })
 export const getRotation = () => rand(0, 360)
-export const getWidth = mdl => rand(0, mdl.width())
-export const getHeight = mdl => rand(0, mdl.height())
+export const getWidth = (mdl) => rand(0, mdl.width())
+export const getHeight = (mdl) => rand(0, mdl.height())
 export const getHue = () => rand(0, 999)
-export const range = size => [...Array(size).keys()]
+export const range = (size) => [...Array(size).keys()]
 
-export const isEmpty = xs => xs.length == 0
+export const isEmpty = (xs) => xs.length == 0
 
 const saveArt = (mdl, art) => {
   let image = { id: mdl.artworks().length, art }
-  mdl.artworks.map(xs => xs.push(image))
+  mdl.artworks.map((xs) => xs.push(image))
+}
+
+export const animateComponentEntrance = (idx, transition) => ({ dom }) => {
+  dom.style.opacity = 0
+  return setTimeout(() => {
+    dom.classList.add(transition)
+    dom.style.opacity = 1
+  }, idx * 100 + 20)
 }
 
 const shapes = ["circle", "square", "triangle"]
@@ -45,6 +53,6 @@ const Model = {
   dom: Stream(null),
   saveArt,
   log,
-  orientation: "portrait",
+  orientation: "portrait"
 }
 export default Model

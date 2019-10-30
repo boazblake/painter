@@ -1,11 +1,11 @@
 import m from "mithril"
 import Canvas from "../components/canvas"
 import Button from "../components/button"
+import { animateComponentEntrance } from "../model.js"
 
 const GalleryTools = () => {
   return {
     view: ({ attrs: { mdl } }) => {
-      console.log("canvas", mdl.canvas())
       return m(
         "aside.navbar.toolbar",
         mdl.canvas() !== null && [
@@ -16,7 +16,7 @@ const GalleryTools = () => {
               e.redraw = false
               let a = document.createElement("a")
               a.href = mdl.dom().toDataURL("image/png")
-              a.download = `AI_Painter_lot#${mdl.artworks.length}.jpg`
+              a.download = `AI_Painter_lot#${mdl.artworks().length}.jpg`
               a.style.display = "none"
               document.body.appendChild(a)
               a.click()
@@ -51,13 +51,15 @@ const Gallery = () => {
     show: false,
     close: (state) => (state.show = !state.show),
     oninit: resetModal,
+    oncreate: ({ dom }) => [].map((c) => dom.classList.add(c)),
     view: ({ state, attrs: { mdl } }) => {
       return [
         m(
           ".gallery",
-          mdl.artworks().map(({ art }) => {
+          mdl.artworks().map(({ art }, idx) => {
             return m(Button, {
-              classList: "paintBtn",
+              oncreate: animateComponentEntrance(idx, "fadeInDownSmall"),
+              classList: "paintBtn.animated",
               action: (e) => {
                 let dom = e.target
                 let ctx = dom.getContext("2d")
